@@ -1,7 +1,8 @@
 package com.github.pengrad.podcasts;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,13 +22,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.menu_search:
+                MenuItemCompat.expandActionView(item);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }
