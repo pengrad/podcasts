@@ -3,7 +3,7 @@ package com.github.pengrad.podcasts;
 import android.content.Context;
 import android.util.Log;
 
-import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.future.ResponseFuture;
 
@@ -13,12 +13,11 @@ import com.koushikdutta.ion.future.ResponseFuture;
  */
 public class ItunesSearchAPI {
 
-    ResponseFuture<JsonObject> searchPodcasts(Context context, String query) {
+    ResponseFuture<ItunesResult> searchPodcasts(Context context, String query) {
         return Ion.with(context)
                 .load("https://itunes.apple.com/search?media=podcast&term=" + query)
                 .setLogging("ItunesSearchAPi", Log.DEBUG)
-//                .as
-                .asJsonObject();
+                .as(TypeToken.get(ItunesResult.class));
     }
 
 }
