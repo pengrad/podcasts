@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onMenuItemActionExpand(MenuItem item) {
-        return false;
+        return true;
     }
 
     @Override
