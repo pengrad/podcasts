@@ -1,5 +1,6 @@
 package com.github.pengrad.podcasts;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
@@ -78,5 +80,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onMenuItemActionCollapse(MenuItem item) {
         mAdapter.clear();
         return false;
+    }
+
+    @OnItemClick(R.id.listview)
+    void onItemClicked() {
+        startActivity(new Intent(this, PodcastChannelActivity.class));
     }
 }
