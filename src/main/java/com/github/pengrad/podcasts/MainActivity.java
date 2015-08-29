@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         mListview.setAdapter(mAdapter);
+        mListview.setEmptyView(findViewById(R.id.emptyView));
     }
 
     @Override
