@@ -55,6 +55,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
 
 
                     Channel channel = new Gson().fromJson(json, Channel.class);
+                    mAdapter.addAll(channel.item);
 
                     Log.d(TAG, "channel " + channel);
                 });
