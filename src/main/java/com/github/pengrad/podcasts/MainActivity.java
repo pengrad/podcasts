@@ -5,12 +5,13 @@ import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
-import java.util.ArrayList;
+import android.widget.ProgressBar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,8 +19,12 @@ import butterknife.OnItemClick;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
-    private SearchView mSearchView;
+    public static final String TAG = "MainActivity";
+
     @Bind(R.id.listview) ListView mListview;
+    @Bind(R.id.progressBar) ProgressBar mProgressBar;
+
+    private SearchView mSearchView;
     private ArrayAdapter<ItunesResult.Podcast> mAdapter;
 
     @Override
@@ -29,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         ButterKnife.bind(this);
 
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new ArrayList<>());
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         mListview.setAdapter(mAdapter);
     }
 
@@ -55,10 +60,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        mAdapter.clear();
+        mProgressBar.setVisibility(View.VISIBLE);
         new ItunesSearchAPI()
                 .searchPodcasts(getApplicationContext(), query)
-                .setCallback((e, result) -> {
-                    mAdapter.clear();
+                .setCallback((ex, result) -> {
+                    mProgressBar.setVisibility(View.GONE);
                     if (result != null) {
                         mAdapter.addAll(result.results);
                     }
@@ -78,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
+        Log.d(TAG, "onMenuItemActionCollapse() returned: " + true);
         mAdapter.clear();
         return true;
     }
