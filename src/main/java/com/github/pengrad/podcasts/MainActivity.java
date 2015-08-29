@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
         mAdapter.clear();
-        return false;
+        return true;
     }
 
     @OnItemClick(R.id.listview)
