@@ -22,9 +22,7 @@ import javax.xml.transform.stream.StreamResult;
 public class XmlConverter {
 
     public static JsonObject toJson(Document document) {
-        String xmlString = toString(document);
-        JSONObject jsonObject = XML.toJSONObject(xmlString);
-        return new Gson().fromJson(jsonObject.toString(), JsonObject.class);
+        return new Gson().fromJson(toJsonString(document), JsonObject.class);
     }
 
     public static String toJsonString(Document document) {
