@@ -27,6 +27,12 @@ public class XmlConverter {
         return new Gson().fromJson(jsonObject.toString(), JsonObject.class);
     }
 
+    public static String toJsonString(Document document) {
+        String xmlString = toString(document);
+        JSONObject jsonObject = XML.toJSONObject(xmlString);
+        return jsonObject.toString();
+    }
+
     public static String toString(Document doc) {
         try {
             StringWriter sw = new StringWriter();
