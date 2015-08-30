@@ -1,6 +1,5 @@
 package com.github.pengrad.podcasts;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     @OnItemClick(R.id.listview)
-    void onItemClicked() {
-        startActivity(new Intent(this, PodcastChannelActivity.class));
+    void onItemClicked(int position) {
+        PodcastChannelActivity.start(this, mAdapter.getItem(position).feedUrl);
     }
 }
