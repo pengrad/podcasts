@@ -4,15 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.koushikdutta.ion.Ion;
-
-import java.util.Arrays;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,24 +50,5 @@ public class PodcastChannelActivity extends AppCompatActivity {
                     Channel channel = new Gson().fromJson(json, Channel.class);
                     mAdapter.addAll(channel.item);
                 });
-    }
-
-    public static class Channel {
-        String title;
-        List<Item> item;
-
-        @Override
-        public String toString() {
-            return title + " \n " + Arrays.toString(item.toArray());
-        }
-    }
-
-    public static class Item {
-        String title;
-
-        @Override
-        public String toString() {
-            return title;
-        }
     }
 }
