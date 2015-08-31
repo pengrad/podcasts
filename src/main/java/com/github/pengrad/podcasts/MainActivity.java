@@ -1,15 +1,16 @@
 package com.github.pengrad.podcasts;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import butterknife.Bind;
@@ -20,11 +21,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     public static final String TAG = "MainActivity";
 
-    @Bind(R.id.listview) ListView mListview;
+    @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.progressBar) ProgressBar mProgressBar;
+    @Bind(R.id.emptyView) View mEmptyView;
 
     private SearchView mSearchView;
-    private ArrayAdapter<ItunesResult.Podcast> mAdapter;
+    private ItunesSearchRecyclerAdapter mItunesSearchAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +35,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         ButterKnife.bind(this);
 
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        mListview.setAdapter(mAdapter);
-        mListview.setEmptyView(findViewById(R.id.emptyView));
+        mItunesSearchAdapter = new ItunesSearchRecyclerAdapter(null);
+
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mItunesSearchAdapter);
     }
 
     @Override
@@ -60,14 +64,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        mAdapter.clear();
+        mItunesSearchAdapter.clear();
         mProgressBar.setVisibility(View.VISIBLE);
         new ItunesSearchAPI()
                 .searchPodcasts(getApplicationContext(), query)
                 .setCallback((ex, result) -> {
                     mProgressBar.setVisibility(View.GONE);
                     if (result != null) {
-                        mAdapter.addAll(result.results);
+                        mItunesSearchAdapter.addAll(result.results);
                     }
                 });
         return true;
@@ -86,12 +90,13 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
         Log.d(TAG, "onMenuItemActionCollapse() returned: " + true);
-        mAdapter.clear();
+        mItunesSearchAdapter.clear();
         return true;
     }
 
+    @Nullable
     @OnItemClick(R.id.listview)
     void onItemClicked(int position) {
-        PodcastChannelActivity.start(this, mAdapter.getItem(position).feedUrl);
+        PodcastChannelActivity.start(this, mItunesSearchAdapter.getItem(position).feedUrl);
     }
 }
