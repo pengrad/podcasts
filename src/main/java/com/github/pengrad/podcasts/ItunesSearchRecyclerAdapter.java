@@ -3,11 +3,15 @@ package com.github.pengrad.podcasts;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.pengrad.podcasts.recyclerview.ItemClickListener;
 import com.github.pengrad.podcasts.recyclerview.RecyclerViewHolder;
 import com.github.pengrad.podcasts.recyclerview.RecyclerViewListAdapter;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * stas
@@ -21,20 +25,25 @@ public class ItunesSearchRecyclerAdapter extends RecyclerViewListAdapter<ItunesR
 
     @Override
     public RecyclerViewHolder<ItunesResult.Podcast> onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_podcast, parent, false);
         return new ViewHolder(view);
     }
 
     public static class ViewHolder extends RecyclerViewHolder<ItunesResult.Podcast> {
 
+        @Bind(R.id.imageView) ImageView mImageView;
+        @Bind(R.id.text_title) TextView mTextTitle;
+        @Bind(R.id.text_artist) TextView mTextArtist;
+
         public ViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
 
         @Override
-        public void onBindItem(ItunesResult.Podcast item) {
-            TextView textView = (TextView) super.itemView.findViewById(android.R.id.text1);
-            textView.setText(item.toString());
+        public void onBindItem(ItunesResult.Podcast podcast) {
+            mTextTitle.setText(podcast.collectionName);
+            mTextArtist.setText(podcast.artistName);
         }
     }
 }
