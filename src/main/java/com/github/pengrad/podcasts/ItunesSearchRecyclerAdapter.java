@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.github.pengrad.podcasts.recyclerview.ItemClickListener;
 import com.github.pengrad.podcasts.recyclerview.RecyclerViewHolder;
 import com.github.pengrad.podcasts.recyclerview.RecyclerViewListAdapter;
+import com.koushikdutta.ion.Ion;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,6 +45,7 @@ public class ItunesSearchRecyclerAdapter extends RecyclerViewListAdapter<ItunesR
         public void onBindItem(ItunesResult.Podcast podcast) {
             mTextTitle.setText(podcast.collectionName);
             mTextArtist.setText(podcast.artistName);
+            Ion.with(super.itemView.getContext()).load(podcast.artworkUrl600).intoImageView(mImageView);
         }
     }
 }

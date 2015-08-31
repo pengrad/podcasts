@@ -17,19 +17,19 @@ public class ItunesResult {
     static class Podcast {
         public final String collectionName;
         public final String artistName;
-        public final String artworkUrl100;
+        public final String artworkUrl600;
         public final String feedUrl;
 
-        public Podcast(String collectionName, String artistName, String artworkUrl100, String feedUrl) {
+        public Podcast(String collectionName, String artistName, String artworkUrl600, String feedUrl) {
             this.collectionName = collectionName;
             this.artistName = artistName;
-            this.artworkUrl100 = artworkUrl100;
+            this.artworkUrl600 = artworkUrl600;
             this.feedUrl = feedUrl;
         }
 
         @Override
         public String toString() {
-            return collectionName + artistName + artworkUrl100;
+            return collectionName + artistName + artworkUrl600;
         }
     }
 
