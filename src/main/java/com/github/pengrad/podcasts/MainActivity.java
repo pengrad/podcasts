@@ -1,7 +1,6 @@
 package com.github.pengrad.podcasts;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +14,6 @@ import android.widget.ProgressBar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
@@ -35,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
         ButterKnife.bind(this);
 
-        mItunesSearchAdapter = new ItunesSearchRecyclerAdapter(null);
+        mItunesSearchAdapter = new ItunesSearchRecyclerAdapter(this::onItemClicked);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
@@ -94,9 +92,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         return true;
     }
 
-    @Nullable
-    @OnItemClick(R.id.listview)
-    void onItemClicked(int position) {
-        PodcastChannelActivity.start(this, mItunesSearchAdapter.getItem(position).feedUrl);
+    void onItemClicked(ItunesResult.Podcast podcast) {
+        PodcastChannelActivity.start(this, podcast.feedUrl);
     }
 }
