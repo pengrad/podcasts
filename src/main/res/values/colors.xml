@@ -5,7 +5,9 @@
     <color name="accent">#bb0</color>
 
     <color name="transparent_primary">#449C27B0</color>
-
     <color name="transparent_black">#2222</color>
     <color name="transparent_white">#6FFF</color>
+
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
 </resources>

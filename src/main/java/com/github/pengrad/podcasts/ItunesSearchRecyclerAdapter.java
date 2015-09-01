@@ -45,7 +45,7 @@ public class ItunesSearchRecyclerAdapter extends RecyclerViewListAdapter<ItunesR
         public void onBindItem(ItunesResult.Podcast podcast) {
             mTextTitle.setText(podcast.collectionName);
             mTextArtist.setText(podcast.artistName);
-            Ion.with(super.itemView.getContext()).load(podcast.artworkUrl600).intoImageView(mImageView);
+            Ion.with(itemView.getContext()).load(podcast.artworkUrl600).intoImageView(mImageView);
         }
     }
 }
