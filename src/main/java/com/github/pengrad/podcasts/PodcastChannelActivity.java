@@ -8,7 +8,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
+import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+
+import org.w3c.dom.Document;
+
+import java.lang.ref.WeakReference;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,13 +47,28 @@ public class PodcastChannelActivity extends AppCompatActivity {
 
         String feedUrl = getIntent().getStringExtra(KEY_FEEDURL);
 
-        Ion.with(this)
+        Ion.with(getApplicationContext())
                 .load(feedUrl)
                 .asDocument()
-                .setCallback((e, result) -> {
-                    String json = XmlConverter.toJson(result).getAsJsonObject("rss").getAsJsonObject("channel").toString();
-                    Channel channel = new Gson().fromJson(json, Channel.class);
-                    mAdapter.addAll(channel.item);
-                });
+                .setCallback(new PodcastLoadedCallback(mAdapter));
+    }
+
+    public static class PodcastLoadedCallback implements FutureCallback<Document> {
+
+        private WeakReference<ArrayAdapter> adapterRef;
+
+        public PodcastLoadedCallback(ArrayAdapter adapter) {
+            this.adapterRef = new WeakReference<>(adapter);
+        }
+
+        @Override
+        public void onCompleted(Exception e, Document result) {
+            ArrayAdapter adapter = adapterRef.get();
+            if (adapter != null && result != null) {
+                String json = XmlConverter.toJson(result).getAsJsonObject("rss").getAsJsonObject("channel").toString();
+                Channel channel = new Gson().fromJson(json, Channel.class);
+                adapter.addAll(channel.item);
+            }
+        }
     }
 }
