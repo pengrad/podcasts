@@ -50,24 +50,30 @@ public class PodcastChannelActivity extends AppCompatActivity {
         Ion.with(getApplicationContext())
                 .load(feedUrl)
                 .asDocument()
-                .setCallback(new PodcastLoadedCallback(mAdapter));
+                .setCallback(new EpisodesLoadedCallback(this));
     }
 
-    public static class PodcastLoadedCallback implements FutureCallback<Document> {
+    private void onEpisodesLoaded(Exception e, Document document) {
+        if (document != null) {
+            String json = XmlConverter.toJson(document).getAsJsonObject("rss").getAsJsonObject("channel").toString();
+            Channel channel = new Gson().fromJson(json, Channel.class);
+            mAdapter.addAll(channel.item);
+        }
+    }
 
-        private WeakReference<ArrayAdapter> adapterRef;
+    public static class EpisodesLoadedCallback implements FutureCallback<Document> {
 
-        public PodcastLoadedCallback(ArrayAdapter adapter) {
-            this.adapterRef = new WeakReference<>(adapter);
+        private WeakReference<PodcastChannelActivity> activityRef;
+
+        public EpisodesLoadedCallback(PodcastChannelActivity activity) {
+            this.activityRef = new WeakReference<>(activity);
         }
 
         @Override
         public void onCompleted(Exception e, Document result) {
-            ArrayAdapter adapter = adapterRef.get();
-            if (adapter != null && result != null) {
-                String json = XmlConverter.toJson(result).getAsJsonObject("rss").getAsJsonObject("channel").toString();
-                Channel channel = new Gson().fromJson(json, Channel.class);
-                adapter.addAll(channel.item);
+            PodcastChannelActivity activity = activityRef.get();
+            if (activity != null) {
+                activity.onEpisodesLoaded(e, result);
             }
         }
     }
