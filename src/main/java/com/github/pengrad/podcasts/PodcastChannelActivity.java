@@ -2,6 +2,7 @@ package com.github.pengrad.podcasts;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
@@ -17,6 +18,7 @@ import java.lang.ref.WeakReference;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 
 /**
  * stas
@@ -34,7 +36,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
     }
 
     @Bind(R.id.listview) ListView mListView;
-    ArrayAdapter<Object> mAdapter;
+    ArrayAdapter<Channel.Episode> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,15 @@ public class PodcastChannelActivity extends AppCompatActivity {
                 .load(feedUrl)
                 .asDocument()
                 .setCallback(new EpisodesLoadedCallback(this));
+    }
+
+    @OnItemClick(R.id.listview)
+    void onItemClick(int position) {
+        String mediaUrl = mAdapter.getItem(position).getMediaUrl();
+        Intent intent = new Intent();
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(mediaUrl), "audio/mp3");
+        startActivity(intent);
     }
 
     private void onEpisodesLoaded(Exception e, Document document) {

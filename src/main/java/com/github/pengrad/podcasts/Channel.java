@@ -1,5 +1,7 @@
 package com.github.pengrad.podcasts;
 
+import com.google.gson.JsonObject;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,6 +21,11 @@ public class Channel {
 
     public static class Episode {
         String title;
+        private JsonObject enclosure;
+
+        public String getMediaUrl() {
+            return enclosure.getAsJsonPrimitive("url").getAsString();
+        }
 
         @Override
         public String toString() {
