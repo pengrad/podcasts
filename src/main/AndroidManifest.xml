@@ -21,7 +21,6 @@
         </activity>
 
         <activity android:name=".PodcastChannelActivity"/>
-        <activity android:name=".PodcastDescriptionActivity"/>
 
     </application>
 
