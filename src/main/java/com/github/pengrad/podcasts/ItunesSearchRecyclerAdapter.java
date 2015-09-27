@@ -6,9 +6,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.pengrad.podcasts.recyclerview.ItemClickListener;
-import com.github.pengrad.podcasts.recyclerview.RecyclerViewHolder;
-import com.github.pengrad.podcasts.recyclerview.RecyclerViewListAdapter;
+import com.github.pengrad.recyclerview.ItemClickListener;
+import com.github.pengrad.recyclerview.RecyclerViewHolder;
+import com.github.pengrad.recyclerview.RecyclerViewListAdapter;
 import com.koushikdutta.ion.Ion;
 
 import butterknife.Bind;
