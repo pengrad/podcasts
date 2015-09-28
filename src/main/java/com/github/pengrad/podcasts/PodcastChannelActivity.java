@@ -9,14 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
-
-import java.lang.ref.WeakReference;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * stas
@@ -47,10 +45,10 @@ public class PodcastChannelActivity extends AppCompatActivity {
 
         String feedUrl = getIntent().getStringExtra(KEY_FEEDURL);
 
-        Ion.with(getApplicationContext())
-                .load(feedUrl)
-                .asString()
-                .setCallback(new EpisodesLoadedCallback(this));
+        new FeedModel().getFeed(feedUrl)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onEpisodesLoaded);
     }
 
     @OnItemClick(R.id.listview)
@@ -62,28 +60,11 @@ public class PodcastChannelActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void onEpisodesLoaded(Exception e, String xml) {
+    private void onEpisodesLoaded(String xml) {
         if (xml != null) {
             String json = XmlConverter.toJson(xml).getAsJsonObject("rss").getAsJsonObject("channel").toString();
             Channel channel = new Gson().fromJson(json, Channel.class);
             mAdapter.addAll(channel.item);
-        }
-    }
-
-    public static class EpisodesLoadedCallback implements FutureCallback<String> {
-
-        private WeakReference<PodcastChannelActivity> activityRef;
-
-        public EpisodesLoadedCallback(PodcastChannelActivity activity) {
-            this.activityRef = new WeakReference<>(activity);
-        }
-
-        @Override
-        public void onCompleted(Exception e, String result) {
-            PodcastChannelActivity activity = activityRef.get();
-            if (activity != null) {
-                activity.onEpisodesLoaded(e, result);
-            }
         }
     }
 }
