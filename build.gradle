@@ -56,6 +56,13 @@ dependencies {
     compile 'com.koushikdutta.ion:ion:2.1.6'
     compile 'com.jakewharton:butterknife:7.0.1'
 
+    compile 'io.reactivex:rxandroid:1.0.1'
+
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+    compile 'com.squareup.retrofit:adapter-rxjava:2.0.0-beta2'
+
+
     compile 'com.github.pengrad:json:2.0'
     compile 'com.github.pengrad:recyclerview-utils:1.0.0'
 

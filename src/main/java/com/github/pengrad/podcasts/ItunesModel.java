@@ -1,26 +1,34 @@
 package com.github.pengrad.podcasts;
 
-import android.content.Context;
-import android.util.Log;
-
+import com.github.pengrad.podcasts.api.ItunesSearchApi;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.koushikdutta.ion.Ion;
-import com.koushikdutta.ion.future.ResponseFuture;
+
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
+import retrofit.RxJavaCallAdapterFactory;
+import rx.Observable;
 
 /**
- * stas
- * 8/21/15
+ * Stas Parshin
+ * 28 September 2015
  */
-public class ItunesSearchAPI {
+public class ItunesModel {
 
-    ResponseFuture<ItunesResult> searchPodcasts(Context context, String query) {
-        return Ion.with(context)
-                .load("https://itunes.apple.com/search?media=podcast&term=" + query)
-                .setLogging("ItunesSearchAPi", Log.DEBUG)
-                .as(TypeToken.get(ItunesResult.class));
+    private final ItunesSearchApi mItunesSearchApi;
+
+    public ItunesModel() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://itunes.apple.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        mItunesSearchApi = retrofit.create(ItunesSearchApi.class);
     }
 
+    public Observable<ItunesResult> search(String query) {
+        return mItunesSearchApi.searchPodcasts(query);
+    }
 
     ItunesResult testSearch() {
         String res = "{\n" +
@@ -157,5 +165,4 @@ public class ItunesSearchAPI {
                 "}";
         return new Gson().fromJson(res, ItunesResult.class);
     }
-
 }

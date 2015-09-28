@@ -14,6 +14,8 @@ import android.widget.ProgressBar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
@@ -23,8 +25,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Bind(R.id.progressBar) ProgressBar mProgressBar;
     @Bind(R.id.emptyView) View mEmptyView;
 
-    private SearchView mSearchView;
-    private ItunesSearchRecyclerAdapter mItunesSearchAdapter;
+    SearchView mSearchView;
+    ItunesSearchRecyclerAdapter mItunesSearchAdapter;
+
+    ItunesModel mItunesModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mItunesSearchAdapter);
+
+        mItunesModel = new ItunesModel();
     }
 
     @Override
@@ -64,9 +70,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onQueryTextSubmit(String query) {
         mItunesSearchAdapter.clear();
         mProgressBar.setVisibility(View.VISIBLE);
-        new ItunesSearchAPI()
-                .searchPodcasts(getApplicationContext(), query)
-                .setCallback((ex, result) -> {
+
+        mItunesModel.search(query)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
                     mProgressBar.setVisibility(View.GONE);
                     if (result != null) {
                         mItunesSearchAdapter.addAll(result.results);
