@@ -1,6 +1,5 @@
 package com.github.pengrad.podcasts;
 
-import com.github.pengrad.json.JSONObject;
 import com.github.pengrad.json.XML;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -21,14 +20,21 @@ import javax.xml.transform.stream.StreamResult;
  */
 public class XmlConverter {
 
+    public static JsonObject toJson(String document) {
+        return new Gson().fromJson(toJsonString(document), JsonObject.class);
+    }
+
+    public static String toJsonString(String document) {
+        return XML.toJSONObject(document).toString();
+    }
+
     public static JsonObject toJson(Document document) {
         return new Gson().fromJson(toJsonString(document), JsonObject.class);
     }
 
     public static String toJsonString(Document document) {
         String xmlString = toString(document);
-        JSONObject jsonObject = XML.toJSONObject(xmlString);
-        return jsonObject.toString();
+        return toJsonString(xmlString);
     }
 
     public static String toString(Document doc) {

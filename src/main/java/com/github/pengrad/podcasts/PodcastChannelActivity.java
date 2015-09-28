@@ -12,8 +12,6 @@ import com.google.gson.Gson;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
-import org.w3c.dom.Document;
-
 import java.lang.ref.WeakReference;
 
 import butterknife.Bind;
@@ -51,7 +49,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
 
         Ion.with(getApplicationContext())
                 .load(feedUrl)
-                .asDocument()
+                .asString()
                 .setCallback(new EpisodesLoadedCallback(this));
     }
 
@@ -64,15 +62,15 @@ public class PodcastChannelActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void onEpisodesLoaded(Exception e, Document document) {
-        if (document != null) {
-            String json = XmlConverter.toJson(document).getAsJsonObject("rss").getAsJsonObject("channel").toString();
+    private void onEpisodesLoaded(Exception e, String xml) {
+        if (xml != null) {
+            String json = XmlConverter.toJson(xml).getAsJsonObject("rss").getAsJsonObject("channel").toString();
             Channel channel = new Gson().fromJson(json, Channel.class);
             mAdapter.addAll(channel.item);
         }
     }
 
-    public static class EpisodesLoadedCallback implements FutureCallback<Document> {
+    public static class EpisodesLoadedCallback implements FutureCallback<String> {
 
         private WeakReference<PodcastChannelActivity> activityRef;
 
@@ -81,7 +79,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onCompleted(Exception e, Document result) {
+        public void onCompleted(Exception e, String result) {
             PodcastChannelActivity activity = activityRef.get();
             if (activity != null) {
                 activity.onEpisodesLoaded(e, result);
