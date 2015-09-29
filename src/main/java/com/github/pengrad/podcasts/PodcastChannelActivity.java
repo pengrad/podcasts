@@ -8,7 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.github.pengrad.podcasts.di.DaggerAppComponent;
+import com.github.pengrad.podcasts.model.FeedModel;
 import com.google.gson.Gson;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,6 +38,8 @@ public class PodcastChannelActivity extends AppCompatActivity {
     @Bind(R.id.listview) ListView mListView;
     ArrayAdapter<Channel.Episode> mAdapter;
 
+    @Inject FeedModel mFeedModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +51,9 @@ public class PodcastChannelActivity extends AppCompatActivity {
 
         String feedUrl = getIntent().getStringExtra(KEY_FEEDURL);
 
-        new FeedModel().getFeed(feedUrl)
+        DaggerAppComponent.create().inject(this);
+
+        mFeedModel.getFeed(feedUrl)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onEpisodesLoaded);

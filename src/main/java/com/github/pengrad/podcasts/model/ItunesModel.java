@@ -1,11 +1,12 @@
-package com.github.pengrad.podcasts;
+package com.github.pengrad.podcasts.model;
 
-import com.github.pengrad.podcasts.api.ItunesSearchApi;
+import com.github.pengrad.podcasts.ItunesResult;
 import com.google.gson.Gson;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
 
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
-import retrofit.RxJavaCallAdapterFactory;
+import javax.inject.Inject;
+
 import rx.Observable;
 
 /**
@@ -14,23 +15,25 @@ import rx.Observable;
  */
 public class ItunesModel {
 
-    private final ItunesSearchApi mItunesSearchApi;
+    private final OkHttpClient mOkHttpClient;
+    private final Gson mGson;
 
-    public ItunesModel() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://itunes.apple.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
-
-        mItunesSearchApi = retrofit.create(ItunesSearchApi.class);
+    @Inject
+    public ItunesModel(OkHttpClient okHttpClient, Gson gson) {
+        mOkHttpClient = okHttpClient;
+        mGson = gson;
     }
 
     public Observable<ItunesResult> search(String query) {
-        return mItunesSearchApi.searchPodcasts(query);
+        String url = "https://itunes.apple.com/search?media=podcast&term=" + query;
+        Request request = new Request.Builder().url(url).build();
+
+        return Observable
+                .create(new StringHttpSubscriber(mOkHttpClient, request))
+                .map(str -> mGson.fromJson(str, ItunesResult.class));
     }
 
-    ItunesResult testSearch() {
+    public Observable<ItunesResult> testSearch() {
         String res = "{\n" +
                 "  \"resultCount\" : 3,\n" +
                 "  \"results\" : [\n" +
@@ -163,6 +166,6 @@ public class ItunesModel {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        return new Gson().fromJson(res, ItunesResult.class);
+        return Observable.just(new Gson().fromJson(res, ItunesResult.class));
     }
 }

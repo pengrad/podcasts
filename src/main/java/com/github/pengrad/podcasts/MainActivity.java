@@ -12,6 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.github.pengrad.podcasts.di.DaggerAppComponent;
+import com.github.pengrad.podcasts.model.ItunesModel;
+
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.android.schedulers.AndroidSchedulers;
@@ -28,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     SearchView mSearchView;
     ItunesSearchRecyclerAdapter mItunesSearchAdapter;
 
-    ItunesModel mItunesModel;
+    @Inject ItunesModel mItunesModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mItunesSearchAdapter);
 
-        mItunesModel = new ItunesModel();
+        DaggerAppComponent.create().inject(this);
     }
 
     @Override
