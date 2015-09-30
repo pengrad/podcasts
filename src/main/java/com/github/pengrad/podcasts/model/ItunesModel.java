@@ -5,8 +5,6 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 
-import javax.inject.Inject;
-
 import rx.Observable;
 
 /**
@@ -18,7 +16,6 @@ public class ItunesModel {
     private final OkHttpClient mOkHttpClient;
     private final Gson mGson;
 
-    @Inject
     public ItunesModel(OkHttpClient okHttpClient, Gson gson) {
         mOkHttpClient = okHttpClient;
         mGson = gson;

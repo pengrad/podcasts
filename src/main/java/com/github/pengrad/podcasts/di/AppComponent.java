@@ -12,7 +12,7 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = NetworkModule.class)
+@Component(modules = {NetworkModule.class, ModelModule.class})
 public interface AppComponent {
 
     void inject(MainActivity mainActivity);

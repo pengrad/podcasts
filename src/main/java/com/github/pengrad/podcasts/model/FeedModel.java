@@ -3,8 +3,6 @@ package com.github.pengrad.podcasts.model;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 
-import javax.inject.Inject;
-
 import rx.Observable;
 
 /**
@@ -15,7 +13,6 @@ public class FeedModel {
 
     private final OkHttpClient mOkHttpClient;
 
-    @Inject
     public FeedModel(OkHttpClient okHttpClient) {
         mOkHttpClient = okHttpClient;
     }
