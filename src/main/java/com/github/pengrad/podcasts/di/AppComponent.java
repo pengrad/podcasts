@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 /**
- * Stanislav Parshin
+ * Stas Parshin
  * 29 September 2015
  */
 

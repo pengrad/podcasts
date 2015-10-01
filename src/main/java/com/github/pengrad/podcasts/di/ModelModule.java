@@ -11,7 +11,7 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Stanislav Parshin
+ * Stas Parshin
  * 01 October 2015
  */
 

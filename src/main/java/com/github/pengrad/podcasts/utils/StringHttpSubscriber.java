@@ -11,7 +11,7 @@ import rx.Observable;
 import rx.Subscriber;
 
 /**
- * Stanislav Parshin
+ * Stas Parshin
  * 29 September 2015
  */
 public class StringHttpSubscriber implements Observable.OnSubscribe<String> {

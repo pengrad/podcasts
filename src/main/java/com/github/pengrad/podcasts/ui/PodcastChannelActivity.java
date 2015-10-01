@@ -11,9 +11,8 @@ import android.widget.ListView;
 import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.model.FeedModel;
-import com.github.pengrad.podcasts.model.data.Channel;
-
-import java.util.List;
+import com.github.pengrad.podcasts.model.data.FeedChannel;
+import com.github.pengrad.podcasts.model.data.FeedEpisode;
 
 import javax.inject.Inject;
 
@@ -39,7 +38,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
     }
 
     @Bind(R.id.listview) ListView mListView;
-    ArrayAdapter<Channel.Episode> mAdapter;
+    ArrayAdapter<FeedEpisode> mAdapter;
 
     @Inject FeedModel mFeedModel;
 
@@ -71,7 +70,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void onEpisodesLoaded(List<Channel.Episode> episodes) {
-        mAdapter.addAll(episodes);
+    private void onEpisodesLoaded(FeedChannel channel) {
+        mAdapter.addAll(channel.item);
     }
 }

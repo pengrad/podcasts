@@ -1,6 +1,6 @@
 package com.github.pengrad.podcasts.model;
 
-import com.github.pengrad.podcasts.model.data.ItunesResult;
+import com.github.pengrad.podcasts.model.data.ItunesSearchResult;
 import com.github.pengrad.podcasts.utils.StringHttpSubscriber;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
@@ -22,16 +22,16 @@ public class ItunesModel {
         mGson = gson;
     }
 
-    public Observable<ItunesResult> search(String query) {
+    public Observable<ItunesSearchResult> search(String query) {
         String url = "https://itunes.apple.com/search?media=podcast&term=" + query;
         Request request = new Request.Builder().url(url).build();
 
         return Observable
                 .create(new StringHttpSubscriber(mOkHttpClient, request))
-                .map(str -> mGson.fromJson(str, ItunesResult.class));
+                .map(str -> mGson.fromJson(str, ItunesSearchResult.class));
     }
 
-    public Observable<ItunesResult> testSearch() {
+    public Observable<ItunesSearchResult> testSearch() {
         String res = "{\n" +
                 "  \"resultCount\" : 3,\n" +
                 "  \"results\" : [\n" +
@@ -164,6 +164,6 @@ public class ItunesModel {
                 "    }\n" +
                 "  ]\n" +
                 "}";
-        return Observable.just(new Gson().fromJson(res, ItunesResult.class));
+        return Observable.just(new Gson().fromJson(res, ItunesSearchResult.class));
     }
 }

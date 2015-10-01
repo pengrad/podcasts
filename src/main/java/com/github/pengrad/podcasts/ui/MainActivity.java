@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.model.ItunesModel;
-import com.github.pengrad.podcasts.model.data.ItunesResult;
+import com.github.pengrad.podcasts.model.data.Podcast;
 
 import javax.inject.Inject;
 
@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mItunesSearchAdapter);
+
     }
 
     @Override
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         return true;
     }
 
-    void onItemClicked(ItunesResult.Podcast podcast) {
+    void onItemClicked(Podcast podcast) {
         PodcastChannelActivity.start(this, podcast.feedUrl);
     }
 }
