@@ -1,5 +1,6 @@
 package com.github.pengrad.podcasts.model;
 
+import com.github.pengrad.podcasts.utils.StringHttpSubscriber;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 

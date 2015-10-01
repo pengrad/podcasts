@@ -1,4 +1,4 @@
-package com.github.pengrad.podcasts;
+package com.github.pengrad.podcasts.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,8 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.di.DaggerAppComponent;
 import com.github.pengrad.podcasts.model.FeedModel;
+import com.github.pengrad.podcasts.model.data.Channel;
+import com.github.pengrad.podcasts.utils.XmlConverter;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;

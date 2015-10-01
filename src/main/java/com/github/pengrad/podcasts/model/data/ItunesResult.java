@@ -1,4 +1,4 @@
-package com.github.pengrad.podcasts;
+package com.github.pengrad.podcasts.model.data;
 
 import java.util.Date;
 
@@ -16,7 +16,7 @@ public class ItunesResult {
         this.results = results;
     }
 
-    static class Podcast {
+    public static class Podcast {
         public long collectionId;
         public String collectionName;
         public String artistName;

@@ -9,6 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
+ * Stanislav Parshin
  * 29 September 2015
  */
 

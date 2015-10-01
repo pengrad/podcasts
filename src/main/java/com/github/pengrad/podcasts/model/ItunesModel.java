@@ -1,6 +1,7 @@
 package com.github.pengrad.podcasts.model;
 
-import com.github.pengrad.podcasts.ItunesResult;
+import com.github.pengrad.podcasts.model.data.ItunesResult;
+import com.github.pengrad.podcasts.utils.StringHttpSubscriber;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;

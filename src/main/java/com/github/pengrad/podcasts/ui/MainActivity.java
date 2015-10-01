@@ -1,4 +1,4 @@
-package com.github.pengrad.podcasts;
+package com.github.pengrad.podcasts.ui;
 
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -12,8 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.di.DaggerAppComponent;
 import com.github.pengrad.podcasts.model.ItunesModel;
+import com.github.pengrad.podcasts.model.data.ItunesResult;
 
 import javax.inject.Inject;
 

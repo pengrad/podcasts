@@ -1,4 +1,4 @@
-package com.github.pengrad.podcasts;
+package com.github.pengrad.podcasts.utils;
 
 import com.github.pengrad.json.XML;
 import com.google.gson.Gson;

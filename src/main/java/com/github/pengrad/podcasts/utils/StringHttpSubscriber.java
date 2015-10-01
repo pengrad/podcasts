@@ -1,4 +1,4 @@
-package com.github.pengrad.podcasts.model;
+package com.github.pengrad.podcasts.utils;
 
 import android.util.Log;
 
@@ -11,6 +11,7 @@ import rx.Observable;
 import rx.Subscriber;
 
 /**
+ * Stanislav Parshin
  * 29 September 2015
  */
 public class StringHttpSubscriber implements Observable.OnSubscribe<String> {

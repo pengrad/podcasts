@@ -11,6 +11,7 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
+ * Stanislav Parshin
  * 01 October 2015
  */
 

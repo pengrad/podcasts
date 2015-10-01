@@ -1,4 +1,4 @@
-package com.github.pengrad.podcasts;
+package com.github.pengrad.podcasts.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.pengrad.podcasts.R;
+import com.github.pengrad.podcasts.model.data.ItunesResult;
 import com.github.pengrad.recyclerview.ItemClickListener;
 import com.github.pengrad.recyclerview.RecyclerViewHolder;
 import com.github.pengrad.recyclerview.RecyclerViewListAdapter;

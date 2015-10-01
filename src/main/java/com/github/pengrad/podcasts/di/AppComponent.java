@@ -1,13 +1,14 @@
 package com.github.pengrad.podcasts.di;
 
-import com.github.pengrad.podcasts.MainActivity;
-import com.github.pengrad.podcasts.PodcastChannelActivity;
+import com.github.pengrad.podcasts.ui.MainActivity;
+import com.github.pengrad.podcasts.ui.PodcastChannelActivity;
 
 import javax.inject.Singleton;
 
 import dagger.Component;
 
 /**
+ * Stanislav Parshin
  * 29 September 2015
  */
 
