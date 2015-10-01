@@ -20,8 +20,8 @@ public class ModelModule {
 
     @Provides
     @Singleton
-    FeedModel provideFeedModel(OkHttpClient okHttpClient) {
-        return new FeedModel(okHttpClient);
+    FeedModel provideFeedModel(OkHttpClient okHttpClient, Gson gson) {
+        return new FeedModel(okHttpClient, gson);
     }
 
     @Provides

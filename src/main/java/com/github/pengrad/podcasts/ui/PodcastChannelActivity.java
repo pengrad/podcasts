@@ -12,8 +12,8 @@ import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.model.FeedModel;
 import com.github.pengrad.podcasts.model.data.Channel;
-import com.github.pengrad.podcasts.utils.XmlConverter;
-import com.google.gson.Gson;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -71,11 +71,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void onEpisodesLoaded(String xml) {
-        if (xml != null) {
-            String json = XmlConverter.toJson(xml).getAsJsonObject("rss").getAsJsonObject("channel").toString();
-            Channel channel = new Gson().fromJson(json, Channel.class);
-            mAdapter.addAll(channel.item);
-        }
+    private void onEpisodesLoaded(List<Channel.Episode> episodes) {
+        mAdapter.addAll(episodes);
     }
 }
