@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
-import com.github.pengrad.podcasts.di.DaggerAppComponent;
 import com.github.pengrad.podcasts.model.FeedModel;
 import com.github.pengrad.podcasts.model.data.Channel;
 import com.github.pengrad.podcasts.utils.XmlConverter;
@@ -47,14 +47,14 @@ public class PodcastChannelActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_channel);
+
+        MyApp.get(this).getAppComponent().inject(this);
         ButterKnife.bind(this);
 
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         mListView.setAdapter(mAdapter);
 
         String feedUrl = getIntent().getStringExtra(KEY_FEEDURL);
-
-        DaggerAppComponent.create().inject(this);
 
         mFeedModel.getFeed(feedUrl)
                 .subscribeOn(Schedulers.io())

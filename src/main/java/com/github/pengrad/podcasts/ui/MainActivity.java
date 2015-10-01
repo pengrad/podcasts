@@ -12,8 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
-import com.github.pengrad.podcasts.di.DaggerAppComponent;
 import com.github.pengrad.podcasts.model.ItunesModel;
 import com.github.pengrad.podcasts.model.data.ItunesResult;
 
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MyApp.get(this).getAppComponent().inject(this);
         ButterKnife.bind(this);
 
         mItunesSearchAdapter = new ItunesSearchRecyclerAdapter(this::onItemClicked);
@@ -49,8 +50,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mItunesSearchAdapter);
-
-        DaggerAppComponent.create().inject(this);
     }
 
     @Override
