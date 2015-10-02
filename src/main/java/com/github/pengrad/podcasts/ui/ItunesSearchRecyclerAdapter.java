@@ -6,12 +6,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.model.data.Podcast;
 import com.github.pengrad.recyclerview.ItemClickListener;
 import com.github.pengrad.recyclerview.RecyclerViewHolder;
 import com.github.pengrad.recyclerview.RecyclerViewListAdapter;
-import com.koushikdutta.ion.Ion;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,7 +47,7 @@ public class ItunesSearchRecyclerAdapter extends RecyclerViewListAdapter<Podcast
         public void onBindItem(Podcast podcast) {
             mTextTitle.setText(podcast.collectionName);
             mTextArtist.setText(podcast.artistName);
-            Ion.with(itemView.getContext()).load(podcast.artworkUrl600).intoImageView(mImageView);
+            Glide.with(mImageView.getContext()).load(podcast.artworkUrl600).into(mImageView);
         }
     }
 }
