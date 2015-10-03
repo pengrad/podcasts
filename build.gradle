@@ -12,9 +12,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven {
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url "http://maven.rushorm.com" }
     }
 }
 
@@ -80,6 +79,8 @@ dependencies {
 
     compile 'com.github.pengrad:json:2.0'
     compile 'com.github.pengrad:recyclerview-utils:1.0.0'
+
+    compile 'co.uk.rushorm:rushandroid:1.1.10'
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-SNAPSHOT'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-SNAPSHOT'
