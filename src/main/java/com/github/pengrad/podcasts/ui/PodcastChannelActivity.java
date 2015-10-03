@@ -58,7 +58,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
         mFeedModel.getFeed(feedUrl)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onEpisodesLoaded);
+                .subscribe(this::onChannelLoaded);
     }
 
     @OnItemClick(R.id.listview)
@@ -70,7 +70,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void onEpisodesLoaded(FeedChannel channel) {
+    private void onChannelLoaded(FeedChannel channel) {
         mAdapter.addAll(channel.item);
     }
 }
