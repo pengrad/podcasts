@@ -1,7 +1,7 @@
 package com.github.pengrad.podcasts.di;
 
 import com.github.pengrad.podcasts.model.FeedModel;
-import com.github.pengrad.podcasts.model.ItunesModel;
+import com.github.pengrad.podcasts.model.PodcastModel;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 
@@ -26,8 +26,8 @@ public class ModelModule {
 
     @Provides
     @Singleton
-    ItunesModel provideItunesModel(OkHttpClient okHttpClient, Gson gson) {
-        return new ItunesModel(okHttpClient, gson);
+    PodcastModel providePodcastModel(OkHttpClient okHttpClient, Gson gson) {
+        return new PodcastModel(okHttpClient, gson);
     }
 
 }

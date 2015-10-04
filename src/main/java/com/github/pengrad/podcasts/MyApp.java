@@ -7,6 +7,9 @@ import com.github.pengrad.podcasts.di.AppComponent;
 import com.github.pengrad.podcasts.di.DaggerAppComponent;
 import com.squareup.leakcanary.LeakCanary;
 
+import co.uk.rushorm.android.AndroidInitializeConfig;
+import co.uk.rushorm.core.RushCore;
+
 /**
  * stas
  * 8/29/15
@@ -25,6 +28,7 @@ public class MyApp extends Application {
 
         mAppComponent = DaggerAppComponent.create();
         LeakCanary.install(this);
+        RushCore.initialize(new AndroidInitializeConfig(this));
     }
 
     public AppComponent getAppComponent() {

@@ -20,8 +20,12 @@ public class Podcast extends RushObject implements Serializable {
 
     private boolean isSubscribed = false;
 
-    Podcast() {
+    public Podcast() {
         //need for RushOrm
+    }
+
+    public String getPodcastId() {
+        return String.valueOf(collectionId);
     }
 
     public String getTitle() {

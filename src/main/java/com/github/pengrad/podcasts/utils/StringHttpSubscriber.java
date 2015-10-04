@@ -29,9 +29,10 @@ public class StringHttpSubscriber implements Observable.OnSubscribe<String> {
         try {
             String response = okHttpClient.newCall(request).execute().body().string();
             subscriber.onNext(response);
+            subscriber.onCompleted();
         } catch (IOException e) {
             Log.d("OnSubscribe", "OkHttpClient error", e);
+            subscriber.onError(e);
         }
-        subscriber.onCompleted();
     }
 }

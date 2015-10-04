@@ -1,5 +1,7 @@
 package com.github.pengrad.podcasts.model.data;
 
+import java.util.List;
+
 /**
  * stas
  * 8/22/15
@@ -7,11 +9,10 @@ package com.github.pengrad.podcasts.model.data;
 public class ItunesSearchResult {
 
     public final int resultCount;
-    public final Podcast[] results;
+    public final List<Podcast> results;
 
-    public ItunesSearchResult(int resultCount, Podcast[] results) {
+    public ItunesSearchResult(int resultCount, List<Podcast> results) {
         this.resultCount = resultCount;
         this.results = results;
     }
-
 }

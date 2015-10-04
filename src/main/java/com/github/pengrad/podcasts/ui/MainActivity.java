@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,8 +13,11 @@ import android.widget.ProgressBar;
 
 import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
-import com.github.pengrad.podcasts.model.ItunesModel;
+import com.github.pengrad.podcasts.model.PodcastModel;
 import com.github.pengrad.podcasts.model.data.Podcast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     public static final String TAG = "MainActivity";
 
-    @Inject ItunesModel mItunesModel;
+    @Inject PodcastModel mPodcastModel;
 
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.progressBar) ProgressBar mProgressBar;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mItunesSearchAdapter);
 
+        showMyPodcasts();
     }
 
     @Override
@@ -75,18 +78,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        mItunesSearchAdapter.clear();
-        mProgressBar.setVisibility(View.VISIBLE);
-
-        mItunesModel.search(query)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                    mProgressBar.setVisibility(View.GONE);
-                    if (result != null) {
-                        mItunesSearchAdapter.addAll(result.results);
-                    }
-                });
+        searchPodcasts(query);
         return true;
     }
 
@@ -102,9 +94,30 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onMenuItemActionCollapse(MenuItem item) {
-        Log.d(TAG, "onMenuItemActionCollapse() returned: " + true);
-        mItunesSearchAdapter.clear();
+        showMyPodcasts();
         return true;
+    }
+
+    void showMyPodcasts() {
+        mItunesSearchAdapter.clear();
+        mPodcastModel.getMyPodcasts().subscribe(this::onPodcastsLoaded);
+    }
+
+    void searchPodcasts(String query) {
+        mItunesSearchAdapter.clear();
+        mProgressBar.setVisibility(View.VISIBLE);
+        mPodcastModel.searchPodcast(query)
+                .onErrorReturn(throwable -> new ArrayList<>(0))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onPodcastsLoaded);
+    }
+
+    void onPodcastsLoaded(List<Podcast> podcasts) {
+        mProgressBar.setVisibility(View.GONE);
+        if (podcasts != null) {
+            mItunesSearchAdapter.addAll(podcasts);
+        }
     }
 
     void onItemClicked(Podcast podcast) {

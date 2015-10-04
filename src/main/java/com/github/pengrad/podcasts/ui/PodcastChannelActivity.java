@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
+import co.uk.rushorm.core.RushSearch;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -63,11 +64,17 @@ public class PodcastChannelActivity extends AppCompatActivity {
         MyApp.get(this).getAppComponent().inject(this);
         ButterKnife.bind(this);
 
-        Podcast podcast = (Podcast) getIntent().getSerializableExtra(EXTRA_PODCAST);
+        Podcast podcast = getPodcast();
 
         initList();
         initPodcastView(podcast);
         getFeedData(podcast);
+    }
+
+    Podcast getPodcast() {
+        Podcast podcast = (Podcast) getIntent().getSerializableExtra(EXTRA_PODCAST);
+        Podcast podcastSaved = new RushSearch().whereId(podcast.getPodcastId()).findSingle(Podcast.class);
+        return podcastSaved != null ? podcastSaved : podcast;
     }
 
     void initList() {

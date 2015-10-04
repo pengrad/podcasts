@@ -1,34 +1,48 @@
 package com.github.pengrad.podcasts.model;
 
+import android.util.Log;
+
 import com.github.pengrad.podcasts.model.data.ItunesSearchResult;
+import com.github.pengrad.podcasts.model.data.Podcast;
 import com.github.pengrad.podcasts.utils.StringHttpSubscriber;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 
+import java.util.List;
+
+import co.uk.rushorm.core.RushSearch;
 import rx.Observable;
 
 /**
  * Stas Parshin
  * 28 September 2015
  */
-public class ItunesModel {
+public class PodcastModel {
 
     private final OkHttpClient mOkHttpClient;
     private final Gson mGson;
 
-    public ItunesModel(OkHttpClient okHttpClient, Gson gson) {
+    public PodcastModel(OkHttpClient okHttpClient, Gson gson) {
         mOkHttpClient = okHttpClient;
         mGson = gson;
     }
 
-    public Observable<ItunesSearchResult> search(String query) {
+    public Observable<List<Podcast>> searchPodcast(String query) {
         String url = "https://itunes.apple.com/search?media=podcast&term=" + query;
         Request request = new Request.Builder().url(url).build();
 
         return Observable
                 .create(new StringHttpSubscriber(mOkHttpClient, request))
-                .map(str -> mGson.fromJson(str, ItunesSearchResult.class));
+                .map(str -> {
+                    Log.d("+++", "map gson serialize");
+                    return mGson.fromJson(str, ItunesSearchResult.class);
+                })
+                .map(itunesSearchResult -> itunesSearchResult.results);
+    }
+
+    public Observable<List<Podcast>> getMyPodcasts() {
+        return Observable.defer(() -> Observable.just(new RushSearch().find(Podcast.class)));
     }
 
     public Observable<ItunesSearchResult> testSearch() {
