@@ -1,7 +1,5 @@
 package com.github.pengrad.podcasts.model;
 
-import android.util.Log;
-
 import com.github.pengrad.podcasts.model.data.ItunesSearchResult;
 import com.github.pengrad.podcasts.model.data.Podcast;
 import com.github.pengrad.podcasts.utils.StringHttpSubscriber;
@@ -34,11 +32,16 @@ public class PodcastModel {
 
         return Observable
                 .create(new StringHttpSubscriber(mOkHttpClient, request))
-                .map(str -> {
-                    Log.d("+++", "map gson serialize");
-                    return mGson.fromJson(str, ItunesSearchResult.class);
-                })
-                .map(itunesSearchResult -> itunesSearchResult.results);
+                .map(str -> mGson.fromJson(str, ItunesSearchResult.class))
+                .map(itunesSearchResult -> itunesSearchResult.results)
+                .map(podcasts -> {
+                    for (Podcast podcast : podcasts) {
+                        Podcast savedPodcast = new RushSearch().whereId(podcast.getPodcastId()).findSingle(Podcast.class);
+                        if (savedPodcast != null)
+                            podcast.setSubscribed(savedPodcast.isSubscribed());
+                    }
+                    return podcasts;
+                });
     }
 
     public Observable<List<Podcast>> getMyPodcasts() {
