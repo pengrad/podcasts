@@ -16,4 +16,5 @@
     <string name="hello_world">Hello world!</string>
     <string name="podcast_image_contentdesc">Podcast image</string>
     <string name="button_subscribe">Subscribe</string>
+    <string name="button_unsubscribe">Unsubscribe</string>
 </resources>

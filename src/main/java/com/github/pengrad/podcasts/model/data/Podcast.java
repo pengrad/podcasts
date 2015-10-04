@@ -40,6 +40,14 @@ public class Podcast extends RushObject implements Serializable {
         return feedUrl;
     }
 
+    public boolean isSubscribed() {
+        return isSubscribed;
+    }
+
+    public void setSubscribed(boolean isSubscribed) {
+        this.isSubscribed = isSubscribed;
+    }
+
     @Override
     public String toString() {
         return collectionName + artistName + artworkUrl600;

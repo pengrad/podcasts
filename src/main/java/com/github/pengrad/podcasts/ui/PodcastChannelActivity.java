@@ -6,11 +6,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.model.FeedModel;
+import com.github.pengrad.podcasts.model.PodcastSubscribtionListener;
 import com.github.pengrad.podcasts.model.data.FeedChannel;
 import com.github.pengrad.podcasts.model.data.FeedEpisode;
 import com.github.pengrad.podcasts.model.data.Podcast;
@@ -39,8 +43,16 @@ public class PodcastChannelActivity extends AppCompatActivity {
     }
 
     @Inject FeedModel mFeedModel;
+    @Inject PodcastSubscribtionListener mSubscribtionListener;
 
     @Bind(R.id.listview) ListView mListView;
+
+    @Bind(R.id.podcastImage) ImageView mPodcastImage;
+    @Bind(R.id.podcastTitle) TextView mPodcastTitle;
+    @Bind(R.id.podcastArtist) TextView mPodcastArtist;
+    @Bind(R.id.podcastDesc) TextView mPodcastDesc;
+    @Bind(R.id.buttonSubscribe) TextView mButtonSubscribe;
+
     ArrayAdapter<FeedEpisode> mAdapter;
 
     @Override
@@ -51,11 +63,43 @@ public class PodcastChannelActivity extends AppCompatActivity {
         MyApp.get(this).getAppComponent().inject(this);
         ButterKnife.bind(this);
 
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        mListView.setAdapter(mAdapter);
-
         Podcast podcast = (Podcast) getIntent().getSerializableExtra(EXTRA_PODCAST);
 
+        initList();
+        initPodcastView(podcast);
+        getFeedData(podcast);
+    }
+
+    void initList() {
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        mListView.setAdapter(mAdapter);
+    }
+
+    void initPodcastView(Podcast podcast) {
+        Glide.with(this).load(podcast.getImageUrl()).into(mPodcastImage);
+        mPodcastTitle.setText(podcast.getTitle());
+        mPodcastArtist.setText(podcast.getArtistName());
+//        mPodcastDesc.setText(podcast.getDescription());
+        initSubscribeButton(podcast);
+    }
+
+    void initSubscribeButton(Podcast podcast) {
+        if (podcast.isSubscribed()) {
+            mButtonSubscribe.setText(R.string.button_unsubscribe);
+            mButtonSubscribe.setOnClickListener(v -> {
+                mSubscribtionListener.onUnsubscribe(podcast);
+                initSubscribeButton(podcast);
+            });
+        } else {
+            mButtonSubscribe.setText(R.string.button_subscribe);
+            mButtonSubscribe.setOnClickListener(v -> {
+                mSubscribtionListener.onSubscribe(podcast);
+                initSubscribeButton(podcast);
+            });
+        }
+    }
+
+    void getFeedData(Podcast podcast) {
         mFeedModel.getFeed(podcast.getFeedUrl())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
