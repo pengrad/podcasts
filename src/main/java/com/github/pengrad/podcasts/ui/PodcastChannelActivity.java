@@ -19,6 +19,8 @@ import com.github.pengrad.podcasts.model.data.FeedChannel;
 import com.github.pengrad.podcasts.model.data.FeedEpisode;
 import com.github.pengrad.podcasts.model.data.Podcast;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import butterknife.Bind;
@@ -108,6 +110,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
 
     void getFeedData(Podcast podcast) {
         mFeedModel.getFeed(podcast.getFeedUrl())
+                .onErrorReturn(throwable -> new FeedChannel("title", new ArrayList<>()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onChannelLoaded);
