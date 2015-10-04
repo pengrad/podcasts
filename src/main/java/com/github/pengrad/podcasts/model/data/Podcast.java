@@ -1,27 +1,43 @@
 package com.github.pengrad.podcasts.model.data;
 
+import java.io.Serializable;
 import java.util.Date;
+
+import co.uk.rushorm.core.RushObject;
 
 /**
  * Stas Parshin
  * 01 October 2015
  */
-public class Podcast {
+public class Podcast extends RushObject implements Serializable {
 
-    public final long collectionId;
-    public final String collectionName;
-    public final String artistName;
-    public final String artworkUrl600;
-    public final String feedUrl;
-    public final Date releaseDate;
+    private long collectionId;
+    private String collectionName;
+    private String artistName;
+    private String artworkUrl600;
+    private String feedUrl;
+    private Date releaseDate;
 
-    public Podcast(long collectionId, String collectionName, String artistName, String artworkUrl600, String feedUrl, Date releaseDate) {
-        this.collectionId = collectionId;
-        this.collectionName = collectionName;
-        this.artistName = artistName;
-        this.artworkUrl600 = artworkUrl600;
-        this.feedUrl = feedUrl;
-        this.releaseDate = releaseDate;
+    private boolean isSubscribed = false;
+
+    Podcast() {
+        //need for RushOrm
+    }
+
+    public String getTitle() {
+        return collectionName;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public String getImageUrl() {
+        return artworkUrl600;
+    }
+
+    public String getFeedUrl() {
+        return feedUrl;
     }
 
     @Override

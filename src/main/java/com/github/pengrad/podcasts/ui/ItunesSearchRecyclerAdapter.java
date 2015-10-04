@@ -45,9 +45,9 @@ public class ItunesSearchRecyclerAdapter extends RecyclerViewListAdapter<Podcast
 
         @Override
         public void onBindItem(Podcast podcast) {
-            mTextTitle.setText(podcast.collectionName);
-            mTextArtist.setText(podcast.artistName);
-            Glide.with(mImageView.getContext()).load(podcast.artworkUrl600).into(mImageView);
+            mTextTitle.setText(podcast.getTitle());
+            mTextArtist.setText(podcast.getArtistName());
+            Glide.with(mImageView.getContext()).load(podcast.getImageUrl()).into(mImageView);
         }
     }
 }

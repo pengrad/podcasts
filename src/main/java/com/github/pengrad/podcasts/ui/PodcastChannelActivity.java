@@ -13,6 +13,7 @@ import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.model.FeedModel;
 import com.github.pengrad.podcasts.model.data.FeedChannel;
 import com.github.pengrad.podcasts.model.data.FeedEpisode;
+import com.github.pengrad.podcasts.model.data.Podcast;
 
 import javax.inject.Inject;
 
@@ -29,18 +30,18 @@ import rx.schedulers.Schedulers;
 public class PodcastChannelActivity extends AppCompatActivity {
 
     private static final String TAG = "PodcastActivity";
-    private static final String KEY_FEEDURL = "FEEDURL";
+    private static final String EXTRA_PODCAST = "extra_podcast";
 
-    public static void start(Context context, String feedUrl) {
+    public static void start(Context context, Podcast podcast) {
         Intent starter = new Intent(context, PodcastChannelActivity.class);
-        starter.putExtra(KEY_FEEDURL, feedUrl);
+        starter.putExtra(EXTRA_PODCAST, podcast);
         context.startActivity(starter);
     }
 
+    @Inject FeedModel mFeedModel;
+
     @Bind(R.id.listview) ListView mListView;
     ArrayAdapter<FeedEpisode> mAdapter;
-
-    @Inject FeedModel mFeedModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +54,9 @@ public class PodcastChannelActivity extends AppCompatActivity {
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         mListView.setAdapter(mAdapter);
 
-        String feedUrl = getIntent().getStringExtra(KEY_FEEDURL);
+        Podcast podcast = (Podcast) getIntent().getSerializableExtra(EXTRA_PODCAST);
 
-        mFeedModel.getFeed(feedUrl)
+        mFeedModel.getFeed(podcast.getFeedUrl())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onChannelLoaded);

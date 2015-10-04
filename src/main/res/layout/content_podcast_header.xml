@@ -25,7 +25,7 @@
             tools:ignore="HardcodedText"/>
 
         <TextView
-            android:id="@+id/podcastAuthor"
+            android:id="@+id/podcastArtist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Author"

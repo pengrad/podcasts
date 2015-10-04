@@ -28,14 +28,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     public static final String TAG = "MainActivity";
 
+    @Inject ItunesModel mItunesModel;
+
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.progressBar) ProgressBar mProgressBar;
     @Bind(R.id.emptyView) View mEmptyView;
 
     SearchView mSearchView;
     ItunesSearchRecyclerAdapter mItunesSearchAdapter;
-
-    @Inject ItunesModel mItunesModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +108,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     void onItemClicked(Podcast podcast) {
-        PodcastChannelActivity.start(this, podcast.feedUrl);
+        PodcastChannelActivity.start(this, podcast);
     }
 }
