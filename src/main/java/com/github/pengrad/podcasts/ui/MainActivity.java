@@ -17,7 +17,7 @@ import com.github.pengrad.podcasts.model.PodcastModel;
 import com.github.pengrad.podcasts.model.data.Podcast;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import javax.inject.Inject;
 
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 .subscribe(this::onPodcastsLoaded);
     }
 
-    void onPodcastsLoaded(List<Podcast> podcasts) {
+    void onPodcastsLoaded(Collection<Podcast> podcasts) {
         mProgressBar.setVisibility(View.GONE);
         if (podcasts != null) {
             mItunesSearchAdapter.addAll(podcasts);

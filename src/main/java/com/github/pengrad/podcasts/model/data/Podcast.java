@@ -53,6 +53,21 @@ public class Podcast extends RushObject implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Podcast podcast = (Podcast) o;
+
+        return collectionId == podcast.collectionId;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (collectionId ^ (collectionId >>> 32));
+    }
+
+    @Override
     public String toString() {
         return collectionName + artistName + artworkUrl600;
     }

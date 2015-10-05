@@ -10,17 +10,20 @@ import javax.inject.Inject;
  */
 public class PodcastSubscribtionListener {
 
+    private final PodcastStore mPodcastStore;
+
     @Inject
-    PodcastSubscribtionListener() {
+    public PodcastSubscribtionListener(PodcastStore podcastStore) {
+        mPodcastStore = podcastStore;
     }
 
     public void onSubscribe(Podcast podcast) {
         podcast.setSubscribed(true);
-        podcast.save(() -> {});
+        mPodcastStore.savePodcast(podcast);
     }
 
     public void onUnsubscribe(Podcast podcast) {
         podcast.setSubscribed(false);
-        podcast.delete(() -> {});
+        mPodcastStore.deletePodcast(podcast);
     }
 }

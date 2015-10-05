@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.model.FeedModel;
+import com.github.pengrad.podcasts.model.PodcastStore;
 import com.github.pengrad.podcasts.model.PodcastSubscribtionListener;
 import com.github.pengrad.podcasts.model.data.FeedChannel;
 import com.github.pengrad.podcasts.model.data.FeedEpisode;
@@ -26,7 +27,6 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
-import co.uk.rushorm.core.RushCore;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -47,6 +47,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
 
     @Inject FeedModel mFeedModel;
     @Inject PodcastSubscribtionListener mSubscribtionListener;
+    @Inject PodcastStore mPodcastStore;
 
     @Bind(R.id.listview) ListView mListView;
 
@@ -75,8 +76,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
 
     Podcast getPodcast() {
         Podcast podcast = (Podcast) getIntent().getSerializableExtra(EXTRA_PODCAST);
-        RushCore.getInstance().registerObjectWithId(podcast, podcast.getPodcastId());
-        return podcast;
+        return mPodcastStore.syncPodcast(podcast);
     }
 
     void initList() {
