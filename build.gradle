@@ -78,7 +78,7 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.0.1'
 
     compile 'com.github.pengrad:json:2.0'
-    compile 'com.github.pengrad:recyclerview-utils:1.0.0'
+    compile 'com.github.pengrad:recyclerview-utils:1.0.1'
 
     compile 'co.uk.rushorm:rushandroid:1.1.10'
 

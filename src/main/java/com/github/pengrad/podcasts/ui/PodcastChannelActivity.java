@@ -1,9 +1,11 @@
 package com.github.pengrad.podcasts.ui;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -39,10 +41,10 @@ public class PodcastChannelActivity extends AppCompatActivity {
     private static final String TAG = "PodcastActivity";
     private static final String EXTRA_PODCAST = "extra_podcast";
 
-    public static void start(Context context, Podcast podcast) {
+    public static void start(Activity context, Podcast podcast, Bundle options) {
         Intent starter = new Intent(context, PodcastChannelActivity.class);
         starter.putExtra(EXTRA_PODCAST, podcast);
-        context.startActivity(starter);
+        ActivityCompat.startActivity(context, starter, options);
     }
 
     @Inject FeedModel mFeedModel;
@@ -72,6 +74,9 @@ public class PodcastChannelActivity extends AppCompatActivity {
         initList();
         initPodcastView(podcast);
         getFeedData(podcast);
+
+        ViewCompat.setTransitionName(mPodcastImage, "");
+//        ViewCompat.setTransitionName(mPodcastTitle, "podcastTitle");
     }
 
     Podcast getPodcast() {
@@ -116,6 +121,10 @@ public class PodcastChannelActivity extends AppCompatActivity {
                 .subscribe(this::onChannelLoaded);
     }
 
+    private void onChannelLoaded(FeedChannel channel) {
+        mAdapter.addAll(channel.item);
+    }
+
     @OnItemClick(R.id.listview)
     void onItemClick(int position) {
         String mediaUrl = mAdapter.getItem(position).getMediaUrl();
@@ -123,9 +132,5 @@ public class PodcastChannelActivity extends AppCompatActivity {
         intent.setAction(android.content.Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(mediaUrl), "audio/mp3");
         startActivity(intent);
-    }
-
-    private void onChannelLoaded(FeedChannel channel) {
-        mAdapter.addAll(channel.item);
     }
 }

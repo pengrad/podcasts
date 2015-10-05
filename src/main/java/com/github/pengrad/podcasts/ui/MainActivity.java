@@ -1,6 +1,7 @@
 package com.github.pengrad.podcasts.ui;
 
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -120,7 +121,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
-    void onItemClicked(Podcast podcast) {
-        PodcastChannelActivity.start(this, podcast);
+    void onItemClicked(Podcast podcast, View view, int adapterPosition) {
+//        Pair<View, String>[] sharedElements = new Pair[2];
+//        sharedElements[0] = new Pair<>(view.findViewById(R.id.podcastImage), "podcastImage");
+//        sharedElements[1] = new Pair<>(view.findViewById(R.id.podcastTitle), "podcastTitle");
+//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedElements);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view.findViewById(R.id.podcastImage), "");
+        PodcastChannelActivity.start(this, podcast, options.toBundle());
     }
 }

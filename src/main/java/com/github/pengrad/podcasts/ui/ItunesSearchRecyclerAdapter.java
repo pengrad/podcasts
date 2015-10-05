@@ -34,9 +34,9 @@ public class ItunesSearchRecyclerAdapter extends RecyclerViewListAdapter<Podcast
 
     public static class ViewHolder extends RecyclerViewHolder<Podcast> {
 
-        @Bind(R.id.imageView) ImageView mImageView;
-        @Bind(R.id.text_title) TextView mTextTitle;
-        @Bind(R.id.text_artist) TextView mTextArtist;
+        @Bind(R.id.podcastImage) ImageView mImageView;
+        @Bind(R.id.podcastTitle) TextView mTextTitle;
+        @Bind(R.id.podcastArtist) TextView mTextArtist;
 
         public ViewHolder(View itemView) {
             super(itemView);
