@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    package="com.github.pengrad.podcasts"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest package="com.github.pengrad.podcasts"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -17,8 +16,10 @@
             android:name="Rush_db_version"
             android:value="2"/>
 
-        <!-- Setting this to true will cause a migration to happen every launch,
-      this is very handy during development although could cause data loss -->
+        <!--
+      Setting this to true will cause a migration to happen every launch,
+      this is very handy during development although could cause data loss
+        -->
         <meta-data
             android:name="Rush_debug"
             android:value="true"/>
@@ -31,10 +32,12 @@
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.PodcastChannelActivity"/>
+        <activity android:name=".ui.SearchActivity"/>
     </application>
+
 </manifest>
