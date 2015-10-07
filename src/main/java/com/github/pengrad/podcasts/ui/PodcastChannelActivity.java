@@ -59,6 +59,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
     @Bind(R.id.podcastDesc) TextView mPodcastDesc;
     @Bind(R.id.buttonSubscribe) TextView mButtonSubscribe;
 
+    Podcast mPodcast;
     ArrayAdapter<FeedEpisode> mAdapter;
 
     @Override
@@ -69,11 +70,11 @@ public class PodcastChannelActivity extends AppCompatActivity {
         MyApp.get(this).getAppComponent().inject(this);
         ButterKnife.bind(this);
 
-        Podcast podcast = getPodcast();
+        mPodcast = getPodcast();
 
         initList();
-        initPodcastView(podcast);
-        getFeedData(podcast);
+        initPodcastView(mPodcast);
+        getFeedData(mPodcast);
 
         ViewCompat.setTransitionName(mPodcastImage, "");
         FadeTransition.create(getWindow());
@@ -93,6 +94,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
         Glide.with(this).load(podcast.getImageUrl()).into(mPodcastImage);
         mPodcastTitle.setText(podcast.getTitle());
         mPodcastArtist.setText(podcast.getArtistName());
+        mPodcastDesc.setText(podcast.getDesc());
         initSubscribeButton(podcast);
     }
 
@@ -121,7 +123,8 @@ public class PodcastChannelActivity extends AppCompatActivity {
     }
 
     private void onChannelLoaded(FeedChannel channel) {
-        mPodcastDesc.setText(channel.desc);
+        mPodcast.setDesc(channel.desc);
+        mPodcastDesc.setText(mPodcast.getDesc());
         mAdapter.addAll(channel.item);
     }
 
