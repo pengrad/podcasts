@@ -22,7 +22,7 @@
         -->
         <meta-data
             android:name="Rush_debug"
-            android:value="true"/>
+            android:value="false"/>
 
         <!-- Turning on logging can be done by settings this value to true -->
         <meta-data

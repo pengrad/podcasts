@@ -24,7 +24,7 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     public static final String TAG = "MainActivity";
 
@@ -49,16 +49,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mItunesSearchAdapter);
-
-        showMyPodcasts();
 //        SearchActivity.start(this, "bob");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showMyPodcasts();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         mSearchMenuItem = menu.findItem(R.id.menu_search);
-        MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
         SearchView searchView = (SearchView) mSearchMenuItem.getActionView();
         searchView.setOnQueryTextListener(this);
         searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> collapseSearchView());
@@ -84,18 +87,9 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onQueryTextChange(String s) { return false; }
 
     @Override
-    public boolean onMenuItemActionExpand(MenuItem item) { return true; }
-
-    @Override
     public boolean onQueryTextSubmit(String query) {
         SearchActivity.start(this, query);
         collapseSearchView();
-        return true;
-    }
-
-    @Override
-    public boolean onMenuItemActionCollapse(MenuItem item) {
-        showMyPodcasts();
         return true;
     }
 

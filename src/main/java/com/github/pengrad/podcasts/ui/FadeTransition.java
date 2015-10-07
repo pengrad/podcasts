@@ -20,5 +20,4 @@ public class FadeTransition {
             window.setEnterTransition(fade);
         }
     }
-
 }
