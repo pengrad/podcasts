@@ -4,6 +4,7 @@ import com.github.pengrad.podcasts.model.data.Podcast;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import co.uk.rushorm.core.RushCore;
 import co.uk.rushorm.core.RushSearch;
@@ -17,12 +18,11 @@ public class PodcastStore {
     private HashMap<String, Podcast> mPodcasts = new HashMap<>(0);
 
     public PodcastStore() {
-        new RushSearch().find(Podcast.class, list -> {
-            mPodcasts = new HashMap<>(list.size());
-            for (Podcast podcast : list) {
-                mPodcasts.put(podcast.getPodcastId(), podcast);
-            }
-        });
+        List<Podcast> list = new RushSearch().find(Podcast.class);
+        mPodcasts = new HashMap<>(list.size());
+        for (Podcast podcast : list) {
+            mPodcasts.put(podcast.getPodcastId(), podcast);
+        }
     }
 
     public Collection<Podcast> getPodcasts() {
