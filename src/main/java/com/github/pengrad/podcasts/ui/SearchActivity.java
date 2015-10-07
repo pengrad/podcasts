@@ -48,6 +48,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     @Bind(R.id.emptyView) View mEmptyView;
 
     ItunesSearchRecyclerAdapter mItunesSearchAdapter;
+    String mQuery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,19 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mItunesSearchAdapter);
 
-        searchPodcasts(getIntentQuery());
+        if (savedInstanceState != null) {
+            mQuery = savedInstanceState.getString(EXTRA_QUERY);
+        } else {
+            mQuery = getIntent().getStringExtra(EXTRA_QUERY);
+        }
+
+        searchPodcasts(mQuery);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(EXTRA_QUERY, mQuery);
     }
 
     @Override
@@ -73,15 +86,11 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         MenuItemCompat.setOnActionExpandListener(menuItem, this);
 
         SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setQuery(getIntentQuery(), false);
+        searchView.setQuery(mQuery, false);
         searchView.setOnQueryTextListener(this);
         searchView.clearFocus();
 
         return true;
-    }
-
-    String getIntentQuery() {
-        return getIntent().getStringExtra(EXTRA_QUERY);
     }
 
     @Override
@@ -98,6 +107,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        mQuery = query;
         searchPodcasts(query);
         return true;
     }
