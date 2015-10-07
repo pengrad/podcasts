@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerView.setAdapter(mItunesSearchAdapter);
 
         showMyPodcasts();
+//        SearchActivity.start(this, "bob");
     }
 
     @Override
@@ -111,11 +112,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     void onItemClicked(Podcast podcast, View view, int adapterPosition) {
-//        Pair<View, String>[] sharedElements = new Pair[2];
-//        sharedElements[0] = new Pair<>(view.findViewById(R.id.podcastImage), "podcastImage");
-//        sharedElements[1] = new Pair<>(view.findViewById(R.id.podcastTitle), "podcastTitle");
-//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedElements);
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view.findViewById(R.id.podcastImage), "");
+        View viewImage = view.findViewById(R.id.podcastImage);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, viewImage, "");
         PodcastChannelActivity.start(this, podcast, options.toBundle());
     }
 }

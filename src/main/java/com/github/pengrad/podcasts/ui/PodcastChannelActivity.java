@@ -76,7 +76,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
         getFeedData(podcast);
 
         ViewCompat.setTransitionName(mPodcastImage, "");
-//        ViewCompat.setTransitionName(mPodcastTitle, "podcastTitle");
+        FadeTransition.create(getWindow());
     }
 
     Podcast getPodcast() {

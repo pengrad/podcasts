@@ -102,7 +102,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
         return true;
     }
 
-
     void searchPodcasts(String query) {
         mItunesSearchAdapter.clear();
         mProgressBar.setVisibility(View.VISIBLE);
@@ -121,11 +120,8 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     }
 
     void onItemClicked(Podcast podcast, View view, int adapterPosition) {
-//        Pair<View, String>[] sharedElements = new Pair[2];
-//        sharedElements[0] = new Pair<>(view.findViewById(R.id.podcastImage), "podcastImage");
-//        sharedElements[1] = new Pair<>(view.findViewById(R.id.podcastTitle), "podcastTitle");
-//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, sharedElements);
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view.findViewById(R.id.podcastImage), "");
+        View viewImage = view.findViewById(R.id.podcastImage);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, viewImage, "");
         PodcastChannelActivity.start(this, podcast, options.toBundle());
     }
 }
