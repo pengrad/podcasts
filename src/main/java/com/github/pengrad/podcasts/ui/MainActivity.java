@@ -1,6 +1,8 @@
 package com.github.pengrad.podcasts.ui;
 
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,9 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ProgressBar;
 
 import com.github.pengrad.podcasts.MyApp;
@@ -23,6 +28,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
@@ -33,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.progressBar) ProgressBar mProgressBar;
     @Bind(R.id.emptyView) View mEmptyView;
+    @Bind(R.id.fab) FloatingActionButton mFab;
 
     ItunesSearchRecyclerAdapter mItunesSearchAdapter;
     MenuItem mSearchMenuItem;
@@ -109,5 +116,27 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         View viewImage = view.findViewById(R.id.podcastImage);
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, viewImage, "");
         PodcastChannelActivity.start(this, podcast, options.toBundle());
+    }
+
+    @OnClick(R.id.fab)
+    void onFabClick() {
+        rotateAnimation(mFab);
+    }
+
+    private void rotateAnimation(View view) {
+        RotateAnimation animation = new RotateAnimation(0, 360, view.getWidth() / 2, view.getHeight() / 2);
+        animation.setDuration(600); // duration in ms
+        animation.setRepeatCount(Animation.INFINITE);
+        animation.setFillAfter(true);
+        animation.setInterpolator(new LinearInterpolator());
+        view.startAnimation(animation);
+
+        new Thread() {
+            @Override
+            public void run() {
+                SystemClock.sleep(3000);
+                runOnUiThread(animation::cancel);
+            }
+        }.start();
     }
 }
