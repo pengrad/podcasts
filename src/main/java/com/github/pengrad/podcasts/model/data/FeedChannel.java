@@ -1,5 +1,7 @@
 package com.github.pengrad.podcasts.model.data;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,9 +13,11 @@ public class FeedChannel {
 
     public final String title;
     public final List<FeedEpisode> item;
+    @SerializedName("itunes:summary") public final String desc;
 
-    public FeedChannel(String title, List<FeedEpisode> item) {
+    public FeedChannel(String title, String desc, List<FeedEpisode> item) {
         this.title = title;
+        this.desc = desc;
         this.item = item;
     }
 

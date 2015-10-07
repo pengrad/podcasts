@@ -93,7 +93,6 @@ public class PodcastChannelActivity extends AppCompatActivity {
         Glide.with(this).load(podcast.getImageUrl()).into(mPodcastImage);
         mPodcastTitle.setText(podcast.getTitle());
         mPodcastArtist.setText(podcast.getArtistName());
-//        mPodcastDesc.setText(podcast.getDescription());
         initSubscribeButton(podcast);
     }
 
@@ -115,13 +114,14 @@ public class PodcastChannelActivity extends AppCompatActivity {
 
     void getFeedData(Podcast podcast) {
         mFeedModel.getFeed(podcast.getFeedUrl())
-                .onErrorReturn(throwable -> new FeedChannel("title", new ArrayList<>()))
+                .onErrorReturn(throwable -> new FeedChannel("title", "desc", new ArrayList<>()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onChannelLoaded);
     }
 
     private void onChannelLoaded(FeedChannel channel) {
+        mPodcastDesc.setText(channel.desc);
         mAdapter.addAll(channel.item);
     }
 
