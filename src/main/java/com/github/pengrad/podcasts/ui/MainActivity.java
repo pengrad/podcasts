@@ -17,15 +17,12 @@ import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.model.PodcastModel;
 import com.github.pengrad.podcasts.model.data.Podcast;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, MenuItemCompat.OnActionExpandListener {
 
@@ -37,8 +34,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Bind(R.id.progressBar) ProgressBar mProgressBar;
     @Bind(R.id.emptyView) View mEmptyView;
 
-    SearchView mSearchView;
     ItunesSearchRecyclerAdapter mItunesSearchAdapter;
+    MenuItem mSearchMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         ButterKnife.bind(this);
 
         mItunesSearchAdapter = new ItunesSearchRecyclerAdapter(this::onItemClicked);
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mItunesSearchAdapter);
@@ -60,9 +56,11 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItemCompat.setOnActionExpandListener(menu.findItem(R.id.menu_search), this);
-        mSearchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        mSearchView.setOnQueryTextListener(this);
+        mSearchMenuItem = menu.findItem(R.id.menu_search);
+        MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
+        SearchView searchView = (SearchView) mSearchMenuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> collapseSearchView());
         return true;
     }
 
@@ -77,19 +75,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
 
+    void collapseSearchView() {
+        MenuItemCompat.collapseActionView(mSearchMenuItem);
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) { return false; }
+
+    @Override
+    public boolean onMenuItemActionExpand(MenuItem item) { return true; }
+
     @Override
     public boolean onQueryTextSubmit(String query) {
         SearchActivity.start(this, query);
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String s) {
-        return false;
-    }
-
-    @Override
-    public boolean onMenuItemActionExpand(MenuItem item) {
+        collapseSearchView();
         return true;
     }
 
@@ -102,16 +101,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     void showMyPodcasts() {
         mItunesSearchAdapter.clear();
         mPodcastModel.getMyPodcasts().subscribe(this::onPodcastsLoaded);
-    }
-
-    void searchPodcasts(String query) {
-        mItunesSearchAdapter.clear();
-        mProgressBar.setVisibility(View.VISIBLE);
-        mPodcastModel.searchPodcast(query)
-                .onErrorReturn(throwable -> new ArrayList<>(0))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onPodcastsLoaded);
     }
 
     void onPodcastsLoaded(Collection<Podcast> podcasts) {
