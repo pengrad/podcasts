@@ -4,8 +4,10 @@ import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import co.uk.rushorm.core.RushObject;
+import co.uk.rushorm.core.annotations.RushList;
 
 /**
  * Stas Parshin
@@ -23,6 +25,9 @@ public class Podcast extends RushObject implements Serializable, Comparable<Podc
     private String desc = "";
     private boolean isSubscribed = false;
     private long subscriptionDate = 0;
+
+    @RushList(classType = PodcastEpisode.class)
+    private List<PodcastEpisode> episodes;
 
     public Podcast() {
         //need for RushOrm
@@ -70,6 +75,14 @@ public class Podcast extends RushObject implements Serializable, Comparable<Podc
 
     public void setSubscriptionDate(long subscriptionDate) {
         this.subscriptionDate = subscriptionDate;
+    }
+
+    public List<PodcastEpisode> getEpisodes() {
+        return episodes;
+    }
+
+    public void setEpisodes(List<PodcastEpisode> episodes) {
+        this.episodes = episodes;
     }
 
     @Override
