@@ -7,7 +7,6 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -44,7 +43,10 @@ public class PodcastModel {
                 .toList();
     }
 
-    public Observable<Collection<Podcast>> getMyPodcasts() {
-        return Observable.defer(() -> Observable.just(mPodcastStore.getPodcasts()));
+    public Observable<List<Podcast>> getMyPodcasts() {
+        return Observable
+                .defer(() -> Observable.just(mPodcastStore.getPodcasts()))
+                .flatMapIterable(podcasts -> podcasts)
+                .toSortedList(Podcast::compareTo);
     }
 }

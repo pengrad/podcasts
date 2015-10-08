@@ -1,5 +1,7 @@
 package com.github.pengrad.podcasts.model.data;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -9,7 +11,7 @@ import co.uk.rushorm.core.RushObject;
  * Stas Parshin
  * 01 October 2015
  */
-public class Podcast extends RushObject implements Serializable {
+public class Podcast extends RushObject implements Serializable, Comparable<Podcast> {
 
     private long collectionId;
     private String collectionName;
@@ -20,6 +22,7 @@ public class Podcast extends RushObject implements Serializable {
 
     private String desc = "";
     private boolean isSubscribed = false;
+    private long subscriptionDate = 0;
 
     public Podcast() {
         //need for RushOrm
@@ -61,6 +64,14 @@ public class Podcast extends RushObject implements Serializable {
         this.desc = desc;
     }
 
+    public long getSubscriptionDate() {
+        return subscriptionDate;
+    }
+
+    public void setSubscriptionDate(long subscriptionDate) {
+        this.subscriptionDate = subscriptionDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,5 +90,12 @@ public class Podcast extends RushObject implements Serializable {
     @Override
     public String toString() {
         return collectionName + artistName + artworkUrl600;
+    }
+
+    @Override
+    public int compareTo(@NonNull Podcast another) {
+        // newest first
+        //TODO: to separate Comparator
+        return another.subscriptionDate > this.subscriptionDate ? 1 : -1;
     }
 }

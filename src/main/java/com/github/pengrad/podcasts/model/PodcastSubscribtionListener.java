@@ -19,6 +19,7 @@ public class PodcastSubscribtionListener {
 
     public void onSubscribe(Podcast podcast) {
         podcast.setSubscribed(true);
+        podcast.setSubscriptionDate(System.currentTimeMillis());
         mPodcastStore.savePodcast(podcast);
     }
 
