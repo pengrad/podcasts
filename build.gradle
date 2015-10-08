@@ -56,7 +56,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
 
     compile 'com.android.support:appcompat-v7:23.0.1'
@@ -78,7 +78,7 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.0.1'
 
     compile 'com.github.pengrad:json:2.0'
-    compile 'com.github.pengrad:recyclerview-utils:1.0.1'
+    compile 'com.github.pengrad:recyclerview-utils:1.0.2'
 
     compile 'co.uk.rushorm:rushandroid:1.1.10'
 

@@ -101,15 +101,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     void showMyPodcasts() {
-        mItunesSearchAdapter.clear();
         mPodcastModel.getMyPodcasts().subscribe(this::onPodcastsLoaded);
     }
 
     void onPodcastsLoaded(Collection<Podcast> podcasts) {
         mProgressBar.setVisibility(View.GONE);
-        if (podcasts != null) {
-            mItunesSearchAdapter.addAll(podcasts);
-        }
+        mItunesSearchAdapter.setData(podcasts);
     }
 
     void onItemClicked(Podcast podcast, View view, int adapterPosition) {

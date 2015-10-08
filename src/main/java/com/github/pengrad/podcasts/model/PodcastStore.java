@@ -18,6 +18,7 @@ public class PodcastStore {
     private HashMap<String, Podcast> mPodcasts = new HashMap<>(0);
 
     public PodcastStore() {
+        //TODO: not in constructor
         List<Podcast> list = new RushSearch().find(Podcast.class);
         mPodcasts = new HashMap<>(list.size());
         for (Podcast podcast : list) {
