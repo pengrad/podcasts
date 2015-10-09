@@ -6,6 +6,7 @@ import com.github.pengrad.podcasts.model.data.Podcast;
 import com.github.pengrad.podcasts.utils.StringHttpSubscriber;
 import com.github.pengrad.podcasts.utils.XmlConverter;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 
@@ -35,7 +36,6 @@ public class PodcastModel {
     public Observable<List<Podcast>> searchPodcast(String query) {
         String url = "https://itunes.apple.com/search?media=podcast&term=" + query;
         Request request = new Request.Builder().url(url).build();
-
         return Observable
                 .create(new StringHttpSubscriber(mOkHttpClient, request))
                 .map(str -> mGson.fromJson(str, ItunesSearchResult.class))
@@ -64,7 +64,7 @@ public class PodcastModel {
     }
 
     private FeedChannel xmlToChannel(String xml) {
-        String json = XmlConverter.toJson(xml).getAsJsonObject("rss").getAsJsonObject("channel").toString();
+        JsonObject json = XmlConverter.toJson(xml).getAsJsonObject("rss").getAsJsonObject("channel");
         return mGson.fromJson(json, FeedChannel.class);
     }
 

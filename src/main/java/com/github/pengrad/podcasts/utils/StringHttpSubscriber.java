@@ -19,6 +19,7 @@ public class StringHttpSubscriber implements Observable.OnSubscribe<String> {
     private final OkHttpClient okHttpClient;
     private final Request request;
 
+    //TODO: one instance with client, request per call
     public StringHttpSubscriber(OkHttpClient okHttpClient, Request request) {
         this.okHttpClient = okHttpClient;
         this.request = request;
