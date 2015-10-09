@@ -15,9 +15,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
-import com.github.pengrad.podcasts.model.FeedModel;
+import com.github.pengrad.podcasts.model.PodcastModel;
 import com.github.pengrad.podcasts.model.PodcastStore;
-import com.github.pengrad.podcasts.model.PodcastSubscribtionListener;
 import com.github.pengrad.podcasts.model.data.FeedChannel;
 import com.github.pengrad.podcasts.model.data.FeedEpisode;
 import com.github.pengrad.podcasts.model.data.Podcast;
@@ -47,9 +46,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
         ActivityCompat.startActivity(context, starter, options);
     }
 
-    @Inject FeedModel mFeedModel;
-    @Inject PodcastSubscribtionListener mSubscribtionListener;
-    @Inject PodcastStore mPodcastStore;
+    @Inject PodcastModel mPodcastModel;
 
     @Bind(R.id.listview) ListView mListView;
 
@@ -82,7 +79,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
 
     Podcast getPodcast() {
         Podcast podcast = (Podcast) getIntent().getSerializableExtra(EXTRA_PODCAST);
-        return mPodcastStore.syncPodcast(podcast);
+        return mPodcastModel.syncPodcast(podcast);
     }
 
     void initList() {
@@ -102,20 +99,20 @@ public class PodcastChannelActivity extends AppCompatActivity {
         if (podcast.isSubscribed()) {
             mButtonSubscribe.setText(R.string.button_unsubscribe);
             mButtonSubscribe.setOnClickListener(v -> {
-                mSubscribtionListener.onUnsubscribe(podcast);
+                mPodcastModel.onUnsubscribe(podcast);
                 initSubscribeButton(podcast);
             });
         } else {
             mButtonSubscribe.setText(R.string.button_subscribe);
             mButtonSubscribe.setOnClickListener(v -> {
-                mSubscribtionListener.onSubscribe(podcast);
+                mPodcastModel.onSubscribe(podcast);
                 initSubscribeButton(podcast);
             });
         }
     }
 
     void getFeedData(Podcast podcast) {
-        mFeedModel.getFeed(podcast.getFeedUrl())
+        mPodcastModel.getFeed(podcast.getFeedUrl())
                 .onErrorReturn(throwable -> new FeedChannel("title", "desc", new ArrayList<>()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

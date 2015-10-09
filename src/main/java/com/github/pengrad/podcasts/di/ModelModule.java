@@ -1,9 +1,6 @@
 package com.github.pengrad.podcasts.di;
 
-import com.github.pengrad.podcasts.model.FeedModel;
 import com.github.pengrad.podcasts.model.PodcastStore;
-import com.google.gson.Gson;
-import com.squareup.okhttp.OkHttpClient;
 
 import javax.inject.Singleton;
 
@@ -17,12 +14,6 @@ import dagger.Provides;
 
 @Module
 public class ModelModule {
-
-    @Provides
-    @Singleton
-    FeedModel provideFeedModel(OkHttpClient okHttpClient, Gson gson) {
-        return new FeedModel(okHttpClient, gson);
-    }
 
     @Provides
     @Singleton

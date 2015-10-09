@@ -69,10 +69,6 @@ public class Podcast extends RushObject implements Serializable, Comparable<Podc
         this.desc = desc;
     }
 
-    public long getSubscriptionDate() {
-        return subscriptionDate;
-    }
-
     public void setSubscriptionDate(long subscriptionDate) {
         this.subscriptionDate = subscriptionDate;
     }
