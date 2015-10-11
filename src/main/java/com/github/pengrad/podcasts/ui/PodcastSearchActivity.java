@@ -7,9 +7,10 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,7 +27,6 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnItemClick;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -47,14 +47,14 @@ public class PodcastSearchActivity extends AppCompatActivity {
 
     @Inject PodcastModel mPodcastModel;
 
-    @Bind(R.id.listview) ListView mListView;
+    @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
 
     @Bind(R.id.podcastImage) ImageView mPodcastImage;
     @Bind(R.id.podcastArtist) TextView mPodcastArtist;
     @Bind(R.id.buttonSubscribe) TextView mButtonSubscribe;
 
     Podcast mPodcast;
-    ArrayAdapter<FeedEpisode> mAdapter;
+    PodcastSearchAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +84,10 @@ public class PodcastSearchActivity extends AppCompatActivity {
     }
 
     void initList() {
-        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
-        mListView.setAdapter(mAdapter);
+        mAdapter = new PodcastSearchAdapter(this::onEpisodeClick);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     void initPodcastView(Podcast podcast) {
@@ -112,22 +114,22 @@ public class PodcastSearchActivity extends AppCompatActivity {
     }
 
     void getFeedData(Podcast podcast) {
-        mPodcastModel.getFeed(podcast.getFeedUrl())
+        mPodcastModel.getFeed(podcast)
                 .onErrorReturn(throwable -> new FeedChannel("title", "desc", new ArrayList<>()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::onChannelLoaded);
+                .subscribe(this::onFeedLoaded);
     }
 
-    private void onChannelLoaded(FeedChannel channel) {
+    private void onFeedLoaded(FeedChannel channel) {
         mPodcast.setDesc(channel.desc);
-//        mPodcastDesc.setText(mPodcast.getDesc());
-        mAdapter.addAll(channel.item);
+        mAdapter.setDescription(channel.desc);
+        mAdapter.setEpisodes(channel.item);
     }
 
-    @OnItemClick(R.id.listview)
-    void onItemClick(int position) {
-        String mediaUrl = mAdapter.getItem(position).getMediaUrl();
+
+    void onEpisodeClick(FeedEpisode episode, View view, int position) {
+        String mediaUrl = episode.getMediaUrl();
         Intent intent = new Intent();
         intent.setAction(android.content.Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(mediaUrl), "audio/mp3");

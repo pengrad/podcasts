@@ -56,8 +56,8 @@ public class PodcastModel {
         return mPodcastStore.syncPodcast(podcast);
     }
 
-    public Observable<FeedChannel> getFeed(String url) {
-        Request request = new Request.Builder().url(url).build();
+    public Observable<FeedChannel> getFeed(Podcast podcast) {
+        Request request = new Request.Builder().url(podcast.getFeedUrl()).build();
         return Observable
                 .create(new StringHttpSubscriber(mOkHttpClient, request))
                 .map(this::xmlToChannel);
