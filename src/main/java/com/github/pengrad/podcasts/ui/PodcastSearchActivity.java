@@ -87,7 +87,7 @@ public class PodcastSearchActivity extends AppCompatActivity {
 
     Podcast getPodcast() {
         Podcast podcast = (Podcast) getIntent().getSerializableExtra(EXTRA_PODCAST);
-        return mPodcastModel.syncPodcast(podcast);
+        return mPodcastModel.loadPodcast(podcast);
     }
 
     void initToolbar() {

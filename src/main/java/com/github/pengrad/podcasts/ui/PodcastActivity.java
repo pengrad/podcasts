@@ -18,14 +18,17 @@ import com.bumptech.glide.Glide;
 import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.model.PodcastModel;
-import com.github.pengrad.podcasts.model.data.FeedEpisode;
 import com.github.pengrad.podcasts.model.data.Podcast;
+import com.github.pengrad.podcasts.model.data.PodcastEpisode;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.OnItemClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * stas
@@ -50,7 +53,7 @@ public class PodcastActivity extends AppCompatActivity {
     @Bind(R.id.podcastArtist) TextView mPodcastArtist;
 
     Podcast mPodcast;
-    ArrayAdapter<FeedEpisode> mAdapter;
+    ArrayAdapter<PodcastEpisode> mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,7 @@ public class PodcastActivity extends AppCompatActivity {
 
     Podcast getPodcast() {
         Podcast podcast = (Podcast) getIntent().getSerializableExtra(EXTRA_PODCAST);
-        return mPodcastModel.syncPodcast(podcast);
+        return mPodcastModel.loadPodcast(podcast);
     }
 
     void initToolbar() {
@@ -103,6 +106,19 @@ public class PodcastActivity extends AppCompatActivity {
         setTitle(podcast.getTitle());
         mPodcastArtist.setText(podcast.getArtistName());
         Glide.with(this).load(podcast.getImageUrl()).into(mPodcastImage);
+    }
+
+    @OnClick(R.id.fab)
+    void refreshPodcast() {
+        mPodcastModel.refreshPodcast(mPodcast)
+                .onErrorReturn(throwable -> mPodcast)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onPodcastRefreshed);
+    }
+
+    void onPodcastRefreshed(Podcast podcast) {
+        mAdapter.addAll(podcast.getEpisodes());
     }
 
     @OnItemClick(R.id.listview)

@@ -3,6 +3,7 @@ package com.github.pengrad.podcasts.model;
 import com.github.pengrad.podcasts.model.data.FeedChannel;
 import com.github.pengrad.podcasts.model.data.ItunesSearchResult;
 import com.github.pengrad.podcasts.model.data.Podcast;
+import com.github.pengrad.podcasts.model.data.PodcastEpisode;
 import com.github.pengrad.podcasts.utils.StringHttpSubscriber;
 import com.github.pengrad.podcasts.utils.XmlConverter;
 import com.google.gson.Gson;
@@ -41,7 +42,7 @@ public class PodcastModel {
                 .map(str -> mGson.fromJson(str, ItunesSearchResult.class))
                 .map(itunesSearchResult -> itunesSearchResult.results)
                 .flatMapIterable(podcasts -> podcasts)
-                .map(mPodcastStore::syncPodcast)
+                .map(mPodcastStore::loadPodcast)
                 .toList();
     }
 
@@ -52,8 +53,8 @@ public class PodcastModel {
                 .toSortedList(Podcast::compareTo);
     }
 
-    public Podcast syncPodcast(Podcast podcast) {
-        return mPodcastStore.syncPodcast(podcast);
+    public Podcast loadPodcast(Podcast podcast) {
+        return mPodcastStore.loadPodcast(podcast);
     }
 
     public Observable<FeedChannel> getFeed(Podcast podcast) {
@@ -77,5 +78,16 @@ public class PodcastModel {
     public void onUnsubscribe(Podcast podcast) {
         podcast.setSubscribed(false);
         mPodcastStore.deletePodcast(podcast);
+    }
+
+    public Observable<Podcast> refreshPodcast(Podcast podcast) {
+        return getFeed(podcast)
+                .flatMapIterable(feedChannel -> feedChannel.item)
+                .map(PodcastEpisode::new)
+                .toList()
+                .map(podcastEpisodes -> {
+                    podcast.setEpisodes(podcastEpisodes);
+                    return podcast;
+                });
     }
 }

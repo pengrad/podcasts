@@ -51,7 +51,7 @@ public class PodcastStore {
         podcast.delete(() -> {});
     }
 
-    public Podcast syncPodcast(Podcast podcast) {
+    public Podcast loadPodcast(Podcast podcast) {
         Podcast savedPodcast = mPodcasts.get(podcast.getPodcastId());
         return savedPodcast == null ? podcast : savedPodcast;
     }
