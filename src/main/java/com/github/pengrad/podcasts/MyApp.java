@@ -26,9 +26,9 @@ public class MyApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        mAppComponent = DaggerAppComponent.create();
         LeakCanary.install(this);
         RushCore.initialize(new AndroidInitializeConfig(this));
+        mAppComponent = DaggerAppComponent.create();
     }
 
     public AppComponent getAppComponent() {
