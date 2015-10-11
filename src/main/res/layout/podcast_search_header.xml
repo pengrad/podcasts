@@ -16,33 +16,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/podcastTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title"
-            android:textColor="@color/primary_text"
-            android:textSize="20sp"
-            tools:ignore="HardcodedText"/>
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/podcastArtist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="4"
             android:text="Author"
             android:textColor="@color/secondary_text"
             android:textSize="16sp"
-            tools:ignore="HardcodedText"/>
-
-        <TextView
-            android:id="@+id/podcastDesc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:text="Desc"
             tools:ignore="HardcodedText"/>
 
         <Button
@@ -50,8 +35,5 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_subscribe"/>
-
     </LinearLayout>
-
-
 </LinearLayout>

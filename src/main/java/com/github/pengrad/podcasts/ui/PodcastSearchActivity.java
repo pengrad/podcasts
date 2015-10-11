@@ -16,26 +16,31 @@ import com.bumptech.glide.Glide;
 import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.model.PodcastModel;
+import com.github.pengrad.podcasts.model.data.FeedChannel;
 import com.github.pengrad.podcasts.model.data.FeedEpisode;
 import com.github.pengrad.podcasts.model.data.Podcast;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * stas
  * 8/27/15
  */
-public class PodcastActivity extends AppCompatActivity {
+public class PodcastSearchActivity extends AppCompatActivity {
 
-    private static final String TAG = "PodcastActivity";
+    private static final String TAG = "PodcastSearchActivity";
     private static final String EXTRA_PODCAST = "extra_podcast";
 
     public static void start(Activity context, Podcast podcast, Bundle options) {
-        Intent starter = new Intent(context, PodcastActivity.class);
+        Intent starter = new Intent(context, PodcastSearchActivity.class);
         starter.putExtra(EXTRA_PODCAST, podcast);
         ActivityCompat.startActivity(context, starter, options);
     }
@@ -46,6 +51,7 @@ public class PodcastActivity extends AppCompatActivity {
 
     @Bind(R.id.podcastImage) ImageView mPodcastImage;
     @Bind(R.id.podcastArtist) TextView mPodcastArtist;
+    @Bind(R.id.buttonSubscribe) TextView mButtonSubscribe;
 
     Podcast mPodcast;
     ArrayAdapter<FeedEpisode> mAdapter;
@@ -53,7 +59,7 @@ public class PodcastActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_podcast);
+        setContentView(R.layout.activity_podcast_search);
 
         MyApp.get(this).getAppComponent().inject(this);
         ButterKnife.bind(this);
@@ -63,6 +69,8 @@ public class PodcastActivity extends AppCompatActivity {
         initList();
         initPodcastView(mPodcast);
         initTransition();
+
+        getFeedData(mPodcast);
     }
 
     Podcast getPodcast() {
@@ -81,9 +89,40 @@ public class PodcastActivity extends AppCompatActivity {
     }
 
     void initPodcastView(Podcast podcast) {
+        Glide.with(this).load(podcast.getImageUrl()).into(mPodcastImage);
         setTitle(podcast.getTitle());
         mPodcastArtist.setText(podcast.getArtistName());
-        Glide.with(this).load(podcast.getImageUrl()).into(mPodcastImage);
+        initSubscribeButton(podcast);
+    }
+
+    void initSubscribeButton(Podcast podcast) {
+        if (podcast.isSubscribed()) {
+            mButtonSubscribe.setText(R.string.button_unsubscribe);
+            mButtonSubscribe.setOnClickListener(v -> {
+                mPodcastModel.onUnsubscribe(podcast);
+                initSubscribeButton(podcast);
+            });
+        } else {
+            mButtonSubscribe.setText(R.string.button_subscribe);
+            mButtonSubscribe.setOnClickListener(v -> {
+                mPodcastModel.onSubscribe(podcast);
+                initSubscribeButton(podcast);
+            });
+        }
+    }
+
+    void getFeedData(Podcast podcast) {
+        mPodcastModel.getFeed(podcast.getFeedUrl())
+                .onErrorReturn(throwable -> new FeedChannel("title", "desc", new ArrayList<>()))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::onChannelLoaded);
+    }
+
+    private void onChannelLoaded(FeedChannel channel) {
+        mPodcast.setDesc(channel.desc);
+//        mPodcastDesc.setText(mPodcast.getDesc());
+        mAdapter.addAll(channel.item);
     }
 
     @OnItemClick(R.id.listview)

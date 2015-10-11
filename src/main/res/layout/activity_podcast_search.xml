@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.github.pengrad.podcasts.ui.PodcastActivity">
+    tools:context="com.github.pengrad.podcasts.ui.PodcastSearchActivity">
 
-    <include layout="@layout/podcast_header"/>
+    <include layout="@layout/podcast_search_header"/>
 
     <ListView
         android:id="@+id/listview"

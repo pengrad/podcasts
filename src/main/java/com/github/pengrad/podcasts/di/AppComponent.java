@@ -2,6 +2,7 @@ package com.github.pengrad.podcasts.di;
 
 import com.github.pengrad.podcasts.ui.MainActivity;
 import com.github.pengrad.podcasts.ui.PodcastActivity;
+import com.github.pengrad.podcasts.ui.PodcastSearchActivity;
 import com.github.pengrad.podcasts.ui.SearchActivity;
 
 import javax.inject.Singleton;
@@ -22,5 +23,7 @@ public interface AppComponent {
     void inject(SearchActivity activity);
 
     void inject(PodcastActivity podcastActivity);
+
+    void inject(PodcastSearchActivity podcastActivity);
 
 }
