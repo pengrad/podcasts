@@ -11,4 +11,8 @@
         <!--<item name="android:background">@color/bg_toolbar</item>-->
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
     </style>
+
+    <style name="Divider">
+        <item name="android:background">@color/light_gray</item>
+    </style>
 </resources>

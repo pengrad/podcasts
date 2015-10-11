@@ -40,7 +40,7 @@
 
     <View
         android:id="@+id/divider"
+        style="@style/Divider"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/light_gray"/>
+        android:layout_height="1dp"/>
 </LinearLayout>

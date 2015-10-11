@@ -16,6 +16,7 @@ import java.util.Collection;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Stas Parshin
@@ -46,7 +47,8 @@ public class PodcastSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_DESC) {
-            return new DescViewHolder(new TextView(parent.getContext()));
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.podcast_description, parent, false);
+            return new DescViewHolder(view);
         } else {
             return mEpisodeAdapter.onCreateViewHolder(parent, viewType);
         }
@@ -58,7 +60,8 @@ public class PodcastSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
             DescViewHolder viewHolder = (DescViewHolder) holder;
             viewHolder.onBindItem(mDescription);
         } else {
-            mEpisodeAdapter.onBindViewHolder((RecyclerViewHolder<FeedEpisode>) holder, position - 1);
+            RecyclerViewHolder<FeedEpisode> viewHolder = (RecyclerViewHolder<FeedEpisode>) holder;
+            mEpisodeAdapter.onBindViewHolder(viewHolder, position - 1);
         }
     }
 
@@ -74,16 +77,25 @@ public class PodcastSearchAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     public static class DescViewHolder extends RecyclerViewHolder<String> {
 
-        private TextView mTextDesc;
+        static final int LIMIT_LINES = 3, MORE_LINES = 200;
+        boolean isLimit = true;
+        @Bind(R.id.text_description) TextView mTextDesc;
 
         public DescViewHolder(View itemView) {
             super(itemView);
-            mTextDesc = (TextView) itemView;
+            ButterKnife.bind(this, itemView);
+            mTextDesc.setMaxLines(LIMIT_LINES);
         }
 
         @Override
         public void onBindItem(String item) {
             mTextDesc.setText(item);
+        }
+
+        @OnClick(R.id.text_description)
+        void onDescClicked() {
+            mTextDesc.setMaxLines(isLimit ? MORE_LINES : LIMIT_LINES);
+            isLimit = !isLimit;
         }
     }
 

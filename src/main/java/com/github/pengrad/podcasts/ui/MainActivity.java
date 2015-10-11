@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mItunesSearchAdapter);
-//        SearchActivity.start(this, "bob");
+        SearchActivity.start(this, "bob");
     }
 
     @Override

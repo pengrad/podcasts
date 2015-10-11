@@ -6,9 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -66,16 +68,33 @@ public class PodcastSearchActivity extends AppCompatActivity {
 
         mPodcast = getPodcast();
 
-        initList();
-        initPodcastView(mPodcast);
+        initToolbar();
         initTransition();
+        initPodcastView(mPodcast);
+        initList();
 
         getFeedData(mPodcast);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     Podcast getPodcast() {
         Podcast podcast = (Podcast) getIntent().getSerializableExtra(EXTRA_PODCAST);
         return mPodcastModel.syncPodcast(podcast);
+    }
+
+    void initToolbar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     void initTransition() {
