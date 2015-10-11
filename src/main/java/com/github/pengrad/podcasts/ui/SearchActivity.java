@@ -132,6 +132,6 @@ public class SearchActivity extends AppCompatActivity implements SearchView.OnQu
     void onItemClicked(Podcast podcast, View view, int adapterPosition) {
         View viewImage = view.findViewById(R.id.podcastImage);
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, viewImage, "");
-        PodcastChannelActivity.start(this, podcast, options.toBundle());
+        PodcastActivity.start(this, podcast, options.toBundle());
     }
 }

@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.model.PodcastModel;
-import com.github.pengrad.podcasts.model.PodcastStore;
 import com.github.pengrad.podcasts.model.data.FeedChannel;
 import com.github.pengrad.podcasts.model.data.FeedEpisode;
 import com.github.pengrad.podcasts.model.data.Podcast;
@@ -35,13 +34,13 @@ import rx.schedulers.Schedulers;
  * stas
  * 8/27/15
  */
-public class PodcastChannelActivity extends AppCompatActivity {
+public class PodcastActivity extends AppCompatActivity {
 
     private static final String TAG = "PodcastActivity";
     private static final String EXTRA_PODCAST = "extra_podcast";
 
     public static void start(Activity context, Podcast podcast, Bundle options) {
-        Intent starter = new Intent(context, PodcastChannelActivity.class);
+        Intent starter = new Intent(context, PodcastActivity.class);
         starter.putExtra(EXTRA_PODCAST, podcast);
         ActivityCompat.startActivity(context, starter, options);
     }
@@ -62,7 +61,7 @@ public class PodcastChannelActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_channel);
+        setContentView(R.layout.activity_podcast);
 
         MyApp.get(this).getAppComponent().inject(this);
         ButterKnife.bind(this);
