@@ -12,9 +12,6 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.ProgressBar;
 
 import com.github.pengrad.podcasts.MyApp;
@@ -121,18 +118,16 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     private void rotateAnimation(View view) {
-        RotateAnimation animation = new RotateAnimation(0, 360, view.getWidth() / 2, view.getHeight() / 2);
-        animation.setDuration(600); // duration in ms
-        animation.setRepeatCount(Animation.INFINITE);
-        animation.setFillAfter(true);
-        animation.setInterpolator(new LinearInterpolator());
-        view.startAnimation(animation);
-
+        view.setEnabled(false);
+        AnimationUtils.startRotateAnimation(view);
         new Thread() {
             @Override
             public void run() {
-                SystemClock.sleep(3000);
-                runOnUiThread(animation::cancel);
+                SystemClock.sleep(2100);
+                runOnUiThread(() -> {
+                    view.setEnabled(true);
+                    view.clearAnimation();
+                });
             }
         }.start();
     }

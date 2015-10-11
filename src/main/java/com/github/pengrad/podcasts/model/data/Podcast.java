@@ -3,6 +3,7 @@ package com.github.pengrad.podcasts.model.data;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Podcast extends RushObject implements Serializable, Comparable<Podc
     private long subscriptionDate = 0;
 
     @RushList(classType = PodcastEpisode.class)
-    private List<PodcastEpisode> episodes;
+    private List<PodcastEpisode> episodes = new ArrayList<>();
 
     public Podcast() {
         //need for RushOrm

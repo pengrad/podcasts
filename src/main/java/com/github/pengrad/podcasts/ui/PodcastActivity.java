@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
@@ -48,7 +49,7 @@ public class PodcastActivity extends AppCompatActivity {
     @Inject PodcastModel mPodcastModel;
 
     @Bind(R.id.listview) ListView mListView;
-
+    @Bind(R.id.fab) FloatingActionButton mFab;
     @Bind(R.id.podcastImage) ImageView mPodcastImage;
     @Bind(R.id.podcastArtist) TextView mPodcastArtist;
 
@@ -69,6 +70,8 @@ public class PodcastActivity extends AppCompatActivity {
         initTransition();
         initPodcastView(mPodcast);
         initList();
+
+        mAdapter.addAll(mPodcast.getEpisodes());
     }
 
     @Override
@@ -110,6 +113,8 @@ public class PodcastActivity extends AppCompatActivity {
 
     @OnClick(R.id.fab)
     void refreshPodcast() {
+        AnimationUtils.startRotateAnimation(mFab);
+        mFab.setEnabled(false);
         mPodcastModel.refreshPodcast(mPodcast)
                 .onErrorReturn(throwable -> mPodcast)
                 .subscribeOn(Schedulers.io())
@@ -118,6 +123,8 @@ public class PodcastActivity extends AppCompatActivity {
     }
 
     void onPodcastRefreshed(Podcast podcast) {
+        mFab.clearAnimation();
+        mFab.setEnabled(true);
         mAdapter.addAll(podcast.getEpisodes());
     }
 
