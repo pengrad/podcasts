@@ -18,7 +18,11 @@ public class FeedEpisode {
     }
 
     public String getMediaUrl() {
-        return enclosure.getAsJsonPrimitive("url").getAsString();
+        try {
+            return enclosure.getAsJsonPrimitive("url").getAsString();
+        } catch (Exception e) {
+            return "";
+        }
     }
 
     @Override
