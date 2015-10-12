@@ -1,19 +1,13 @@
 package com.github.pengrad.podcasts.model;
 
-import android.content.Context;
-
 import com.github.pengrad.podcasts.model.data.Podcast;
-import com.github.pengrad.podcasts.model.data.PodcastEpisode;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import co.uk.rushorm.android.AndroidInitializeConfig;
-import co.uk.rushorm.core.Rush;
 import co.uk.rushorm.core.RushCore;
 import co.uk.rushorm.core.RushSearch;
 
@@ -23,24 +17,14 @@ import co.uk.rushorm.core.RushSearch;
  */
 public class PodcastStore {
 
-    private Map<String, Podcast> mPodcasts = new HashMap<>(0);
+    private Map<String, Podcast> mPodcasts;
 
-    public PodcastStore(Context context) {
+    public PodcastStore() {
         mPodcasts = Collections.synchronizedMap(new HashMap<>());
-
-        List<Class<? extends Rush>> classes = new ArrayList<>();
-        classes.add(Podcast.class);
-        classes.add(PodcastEpisode.class);
-
-        AndroidInitializeConfig config = new AndroidInitializeConfig(context);
-        config.setClasses(classes);
-        config.setInitializeListener(isInit -> {
-            List<Podcast> list = new RushSearch().find(Podcast.class);
-            for (Podcast podcast : list) {
-                mPodcasts.put(podcast.getPodcastId(), podcast);
-            }
-        });
-        RushCore.initialize(config);
+        List<Podcast> list = new RushSearch().find(Podcast.class);
+        for (Podcast podcast : list) {
+            mPodcasts.put(podcast.getPodcastId(), podcast);
+        }
     }
 
     public Collection<Podcast> getPodcasts() {

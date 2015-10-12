@@ -1,7 +1,5 @@
 package com.github.pengrad.podcasts.di;
 
-import android.content.Context;
-
 import com.github.pengrad.podcasts.model.PodcastStore;
 
 import javax.inject.Singleton;
@@ -19,8 +17,8 @@ public class ModelModule {
 
     @Provides
     @Singleton
-    PodcastStore providePodcastStore(Context context) {
-        return new PodcastStore(context);
+    PodcastStore providePodcastStore() {
+        return new PodcastStore();
     }
 
 }
