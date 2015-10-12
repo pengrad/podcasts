@@ -57,6 +57,6 @@ public class PodcastEpisode extends RushObject implements Serializable {
 
     @Override
     public String toString() {
-        return title;
+        return isNew ? "[NEW] " + title : title;
     }
 }

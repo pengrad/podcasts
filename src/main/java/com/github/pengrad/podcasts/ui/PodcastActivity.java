@@ -125,6 +125,7 @@ public class PodcastActivity extends AppCompatActivity {
     void onPodcastRefreshed(Podcast podcast) {
         mFab.clearAnimation();
         mFab.setEnabled(true);
+        mAdapter.clear();
         mAdapter.addAll(podcast.getEpisodes());
     }
 

@@ -51,6 +51,6 @@ public class PodcastStore {
 
     public Podcast loadPodcast(Podcast podcast) {
         Podcast savedPodcast = mPodcasts.get(podcast.getPodcastId());
-        return savedPodcast == null ? podcast : savedPodcast;
+        return savedPodcast != null ? savedPodcast : podcast;
     }
 }
