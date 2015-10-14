@@ -141,7 +141,6 @@ public class PodcastSearchActivity extends AppCompatActivity {
     }
 
     private void onFeedLoaded(FeedChannel channel) {
-        mPodcast.setDesc(channel.desc);
         mAdapter.setDescription(channel.desc);
         mAdapter.setEpisodes(channel.item);
     }

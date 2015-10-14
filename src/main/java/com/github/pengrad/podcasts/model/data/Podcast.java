@@ -23,7 +23,6 @@ public class Podcast extends RushObject implements Serializable, Comparable<Podc
     private String feedUrl;
     private Date releaseDate;
 
-    private String desc = "";
     private boolean isSubscribed = false;
     private long subscriptionDate = 0;
 
@@ -60,14 +59,6 @@ public class Podcast extends RushObject implements Serializable, Comparable<Podc
 
     public void setSubscribed(boolean isSubscribed) {
         this.isSubscribed = isSubscribed;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
     }
 
     public void setSubscriptionDate(long subscriptionDate) {
