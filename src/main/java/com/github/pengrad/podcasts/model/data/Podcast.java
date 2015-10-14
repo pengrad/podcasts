@@ -82,6 +82,14 @@ public class Podcast extends RushObject implements Serializable, Comparable<Podc
         this.episodes = episodes;
     }
 
+    public boolean isNewEpisode(PodcastEpisode episode) {
+        int index = getEpisodes().indexOf(episode);
+        if (index >= 0) {
+            return getEpisodes().get(index).isNew();
+        }
+        return true;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

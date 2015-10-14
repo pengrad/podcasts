@@ -11,7 +11,6 @@ import com.google.gson.JsonObject;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -90,9 +89,10 @@ public class PodcastModel {
     }
 
     private Podcast refreshPodcastEpisodes(Podcast podcast, List<PodcastEpisode> episodes) {
-        ArrayList<PodcastEpisode> newList = new ArrayList<>(episodes);
-        newList.removeAll(podcast.getEpisodes());
-        podcast.getEpisodes().addAll(0, newList);
+        for (PodcastEpisode episode : episodes) {
+            episode.setNew(podcast.isNewEpisode(episode));
+        }
+        podcast.setEpisodes(episodes);
         mPodcastStore.savePodcast(podcast);
         return podcast;
     }

@@ -36,7 +36,7 @@ public class PodcastEpisode extends RushObject implements Serializable {
         return isNew;
     }
 
-    public void setIsNew(boolean isNew) {
+    public void setNew(boolean isNew) {
         this.isNew = isNew;
     }
 
