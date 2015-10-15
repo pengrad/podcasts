@@ -1,8 +1,6 @@
 package com.github.pengrad.podcasts.ui;
 
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +10,7 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.ProgressBar;
 
 import com.github.pengrad.podcasts.MyApp;
@@ -36,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
     @Bind(R.id.progressBar) ProgressBar mProgressBar;
     @Bind(R.id.emptyView) View mEmptyView;
-    @Bind(R.id.fab) FloatingActionButton mFab;
+    @Bind(R.id.rotatingFab) View mRotatingFab;
 
     ItunesSearchRecyclerAdapter mItunesSearchAdapter;
     MenuItem mSearchMenuItem;
@@ -114,21 +113,17 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @OnClick(R.id.fab)
     void onFabClick() {
-        rotateAnimation(mFab);
+        rotateAnimation(mRotatingFab);
     }
 
     private void rotateAnimation(View view) {
-        view.setEnabled(false);
-        AnimationUtils.startRotateAnimation(view);
-        new Thread() {
-            @Override
-            public void run() {
-                SystemClock.sleep(2100);
-                runOnUiThread(() -> {
-                    view.setEnabled(true);
-                    view.clearAnimation();
-                });
-            }
-        }.start();
+
+        Animation animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.rotate);
+        view.startAnimation(animation);
+
+
+        view.postDelayed(() -> {
+            view.clearAnimation();
+        }, 2100);
     }
 }

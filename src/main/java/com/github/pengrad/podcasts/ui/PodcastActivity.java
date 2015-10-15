@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -49,7 +50,7 @@ public class PodcastActivity extends AppCompatActivity {
     @Inject PodcastModel mPodcastModel;
 
     @Bind(R.id.listview) ListView mListView;
-    @Bind(R.id.fab) FloatingActionButton mFab;
+    @Bind(R.id.rotatingFab) View mRotatingFab;
     @Bind(R.id.podcastImage) ImageView mPodcastImage;
     @Bind(R.id.podcastArtist) TextView mPodcastArtist;
 
@@ -113,8 +114,7 @@ public class PodcastActivity extends AppCompatActivity {
 
     @OnClick(R.id.fab)
     void refreshPodcast() {
-        AnimationUtils.startRotateAnimation(mFab);
-        mFab.setEnabled(false);
+        mRotatingFab.startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
         mPodcastModel.refreshPodcast(mPodcast)
                 .onErrorReturn(throwable -> mPodcast)
                 .subscribeOn(Schedulers.io())
@@ -123,8 +123,7 @@ public class PodcastActivity extends AppCompatActivity {
     }
 
     void onPodcastRefreshed(Podcast podcast) {
-        mFab.clearAnimation();
-        mFab.setEnabled(true);
+        mRotatingFab.clearAnimation();
         mAdapter.clear();
         mAdapter.addAll(podcast.getEpisodes());
     }
