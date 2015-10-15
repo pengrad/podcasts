@@ -1,9 +1,9 @@
 package com.github.pengrad.podcasts.di;
 
-import com.github.pengrad.podcasts.ui.MainActivity;
-import com.github.pengrad.podcasts.ui.PodcastActivity;
-import com.github.pengrad.podcasts.ui.PodcastSearchActivity;
-import com.github.pengrad.podcasts.ui.SearchActivity;
+import com.github.pengrad.podcasts.ui.screens.MainActivity;
+import com.github.pengrad.podcasts.ui.screens.PodcastActivity;
+import com.github.pengrad.podcasts.ui.screens.PodcastSearchActivity;
+import com.github.pengrad.podcasts.ui.screens.SearchActivity;
 
 import javax.inject.Singleton;
 

@@ -1,4 +1,4 @@
-package com.github.pengrad.podcasts.ui;
+package com.github.pengrad.podcasts.ui.screens;
 
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -17,6 +17,7 @@ import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
 import com.github.pengrad.podcasts.model.PodcastModel;
 import com.github.pengrad.podcasts.model.data.Podcast;
+import com.github.pengrad.podcasts.ui.adapters.ItunesSearchRecyclerAdapter;
 
 import java.util.Collection;
 

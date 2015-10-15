@@ -1,4 +1,4 @@
-package com.github.pengrad.podcasts.ui;
+package com.github.pengrad.podcasts.ui.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;

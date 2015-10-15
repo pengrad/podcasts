@@ -31,16 +31,16 @@
             android:name="Rush_log"
             android:value="true"/>
 
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.screens.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.PodcastActivity"/>
-        <activity android:name=".ui.SearchActivity"/>
-        <activity android:name=".ui.PodcastSearchActivity">
+        <activity android:name=".ui.screens.PodcastActivity"/>
+        <activity android:name=".ui.screens.SearchActivity"/>
+        <activity android:name=".ui.screens.PodcastSearchActivity">
         </activity>
     </application>
 

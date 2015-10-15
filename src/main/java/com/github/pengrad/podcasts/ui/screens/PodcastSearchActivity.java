@@ -1,4 +1,4 @@
-package com.github.pengrad.podcasts.ui;
+package com.github.pengrad.podcasts.ui.screens;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,6 +22,8 @@ import com.github.pengrad.podcasts.model.PodcastModel;
 import com.github.pengrad.podcasts.model.data.FeedChannel;
 import com.github.pengrad.podcasts.model.data.FeedEpisode;
 import com.github.pengrad.podcasts.model.data.Podcast;
+import com.github.pengrad.podcasts.ui.FadeTransition;
+import com.github.pengrad.podcasts.ui.adapters.PodcastSearchAdapter;
 
 import java.util.ArrayList;
 
