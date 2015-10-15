@@ -81,8 +81,7 @@ dependencies {
     compile 'com.github.pengrad:json:2.0'
     compile 'com.github.pengrad:recyclerview-utils:1.0.2'
 
-//    compile 'co.uk.rushorm:rushandroid:1.1.10'
-    compile(name: 'rushandroid-release', ext: 'aar')
+    compile 'co.uk.rushorm:rushandroid:1.1.11'
 
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
