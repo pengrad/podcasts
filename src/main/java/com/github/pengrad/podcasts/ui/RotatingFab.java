@@ -2,7 +2,6 @@ package com.github.pengrad.podcasts.ui;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,7 +18,7 @@ import butterknife.ButterKnife;
  */
 public class RotatingFab extends FrameLayout {
 
-    @Bind(R.id.fab) FloatingActionButton mFab;
+    @Bind(R.id.fab) View mFab;
     @Bind(R.id.fabImage) View mFabImage;
 
     public RotatingFab(Context context, AttributeSet attrs) {
@@ -40,6 +39,7 @@ public class RotatingFab extends FrameLayout {
             mFab.startAnimation(animation);
         } else {
             mFabImage.setVisibility(VISIBLE);
+            // need post() to image could measure its size
             mFabImage.post(() -> mFabImage.startAnimation(animation));
         }
     }
