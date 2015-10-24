@@ -80,7 +80,6 @@ dependencies {
 
     compile 'com.github.pengrad:json:2.0'
     compile 'com.github.pengrad:recyclerview-utils:1.0.2'
-    compile 'com.github.pengrad:java-telegram-bot-api:1.1.0'
 
     compile 'co.uk.rushorm:rushandroid:1.1.11'
 
