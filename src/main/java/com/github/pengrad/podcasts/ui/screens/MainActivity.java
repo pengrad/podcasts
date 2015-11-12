@@ -1,65 +1,29 @@
 package com.github.pengrad.podcasts.ui.screens;
 
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.Animation;
-import android.widget.ProgressBar;
 
-import com.github.pengrad.podcasts.MyApp;
 import com.github.pengrad.podcasts.R;
-import com.github.pengrad.podcasts.model.PodcastModel;
-import com.github.pengrad.podcasts.model.data.Podcast;
-import com.github.pengrad.podcasts.ui.adapters.ItunesSearchRecyclerAdapter;
-
-import java.util.Collection;
-
-import javax.inject.Inject;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     public static final String TAG = "MainActivity";
 
-    @Inject PodcastModel mPodcastModel;
-
-    @Bind(R.id.recycler_view) RecyclerView mRecyclerView;
-    @Bind(R.id.progressBar) ProgressBar mProgressBar;
-    @Bind(R.id.emptyView) View mEmptyView;
-    @Bind(R.id.rotatingFab) View mRotatingFab;
-
-    ItunesSearchRecyclerAdapter mItunesSearchAdapter;
     MenuItem mSearchMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        MyApp.get(this).getAppComponent().inject(this);
-        ButterKnife.bind(this);
-
-        mItunesSearchAdapter = new ItunesSearchRecyclerAdapter(this::onItemClicked);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setAdapter(mItunesSearchAdapter);
-//        SearchActivity.start(this, "bob");
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        showMyPodcasts();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, new MyPodcastsFragment(), "SEARCH_FRAGMENT");
+        transaction.commit();
     }
 
     @Override
@@ -68,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         mSearchMenuItem = menu.findItem(R.id.menu_search);
         SearchView searchView = (SearchView) mSearchMenuItem.getActionView();
         searchView.setOnQueryTextListener(this);
-        searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> collapseSearchView());
+//        searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> collapseSearchView());
         return true;
     }
 
@@ -92,39 +56,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        SearchActivity.start(this, query);
-        collapseSearchView();
+        navigateToSearchFragment(query);
+//        collapseSearchView();
         return true;
     }
 
-    void showMyPodcasts() {
-        mPodcastModel.getMyPodcasts().subscribe(this::onPodcastsLoaded);
-    }
+    private void navigateToSearchFragment(String query) {
 
-    void onPodcastsLoaded(Collection<Podcast> podcasts) {
-        mProgressBar.setVisibility(View.GONE);
-        mItunesSearchAdapter.setData(podcasts);
-    }
-
-    void onItemClicked(Podcast podcast, View view, int adapterPosition) {
-        View viewImage = view.findViewById(R.id.podcastImage);
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, viewImage, "");
-        PodcastActivity.start(this, podcast, options.toBundle());
-    }
-
-    @OnClick(R.id.fab)
-    void onFabClick() {
-        rotateAnimation(mRotatingFab);
-    }
-
-    private void rotateAnimation(View view) {
-
-        Animation animation = android.view.animation.AnimationUtils.loadAnimation(this, R.anim.rotate);
-        view.startAnimation(animation);
-
-
-        view.postDelayed(() -> {
-            view.clearAnimation();
-        }, 2100);
+        Fragment fragment = SearchFragment.create(query);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.setCustomAnimations(
+//                R.animator.slide_in_from_right, R.animator.slide_out_to_left,
+//                R.animator.slide_in_from_left, R.animator.slide_out_to_right);
+        transaction.replace(R.id.container, fragment, "SEARCH_FRAGMENT");
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

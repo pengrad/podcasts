@@ -28,6 +28,10 @@ public class MyApp extends Application {
         return (MyApp) context.getApplicationContext();
     }
 
+    public static AppComponent getInjector(Context context) {
+        return ((MyApp) context.getApplicationContext()).mAppComponent;
+    }
+
     private AppComponent mAppComponent;
 
     @Override
