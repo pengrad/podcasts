@@ -26,8 +26,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         transaction.commit();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+//    @Override
+    public boolean onCreateOptionsMenu2(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         mSearchMenuItem = menu.findItem(R.id.menu_search);
         SearchView searchView = (SearchView) mSearchMenuItem.getActionView();
@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+//    @Override
+    public boolean onOptionsItemSelected2(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_search:
                 MenuItemCompat.expandActionView(item);
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         return true;
     }
 
-    private void navigateToSearchFragment(String query) {
+    public void navigateToSearchFragment(String query) {
 
         Fragment fragment = SearchFragment.create(query);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

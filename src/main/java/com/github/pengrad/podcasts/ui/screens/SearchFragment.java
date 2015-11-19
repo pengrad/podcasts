@@ -63,7 +63,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         Activity activity = getActivity();
 
         View view = inflater.inflate(R.layout.activity_search, container, false);

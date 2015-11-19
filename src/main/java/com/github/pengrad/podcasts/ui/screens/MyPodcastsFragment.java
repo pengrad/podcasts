@@ -5,9 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -31,7 +36,7 @@ import butterknife.OnClick;
  * Stas Parshin
  * 12 November 2015
  */
-public class MyPodcastsFragment extends Fragment {
+public class MyPodcastsFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     @Inject PodcastModel mPodcastModel;
 
@@ -41,6 +46,14 @@ public class MyPodcastsFragment extends Fragment {
     @Bind(R.id.rotatingFab) View mRotatingFab;
 
     ItunesSearchRecyclerAdapter mItunesSearchAdapter;
+
+    MenuItem mSearchMenuItem;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -57,6 +70,26 @@ public class MyPodcastsFragment extends Fragment {
         mRecyclerView.setAdapter(mItunesSearchAdapter);
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_main, menu);
+        mSearchMenuItem = menu.findItem(R.id.menu_search);
+        SearchView searchView = (SearchView) mSearchMenuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_search:
+                MenuItemCompat.expandActionView(item);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -95,5 +128,17 @@ public class MyPodcastsFragment extends Fragment {
         view.postDelayed(() -> {
             view.clearAnimation();
         }, 2100);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        ((MainActivity) getActivity()).navigateToSearchFragment(query);
+//        collapseSearchView();
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
     }
 }
